@@ -217,8 +217,6 @@ if [[ "${_arg_component_ver}" =~ ^latest ]]; then
 	determine_latest_version
 fi
 
-_component_build_dir
-
 mkdir -p ${_arg_build_dir}
 pushd ${_arg_build_dir}
 fetch_source
