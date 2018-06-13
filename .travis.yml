@@ -1,0 +1,22 @@
+sudo: required
+dist: trusty
+
+env:
+  - TEST_NAME=install_all_2.1.sh
+  - TEST_NAME=install_all_2.2.sh
+  - TEST_NAME=install_all_git_master.sh
+  - TEST_NAME=install_all_latest.sh
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y install libgnutls28-dev bzip2 make gettext texinfo \
+    gnutls-bin build-essential g++
+
+before_script:
+
+script:
+  - bash ./tests/$TEST_NAME
+
+matrix:
+  allow_failures:
+    - rvm: ruby-head
