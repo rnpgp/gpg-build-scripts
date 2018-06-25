@@ -1,5 +1,7 @@
 A set of build scripts for Gnu Privacy Guard.
 
+image:https://img.shields.io/travis/riboseinc/gpg-build-scripts/master.svg["Build Status", link="https://travis-ci.org/riboseinc/gpg-build-scripts"]
+
 == Prerequisites
 
 Build should succeed on any Linux distribution, and similar systems.  Popular
