@@ -1,0 +1,160 @@
+A set of build scripts for Gnu Privacy Guard.
+
+== Prerequisites
+
+Build should succeed on any Linux distribution, and similar systems.  Popular
+GNU build tools are required.  For Ubuntu, following packages should be enough:
+`libgnutls28-dev`, `bzip2`, `make`, `gettext`, `texinfo`, `gnutls-bin`,
+`build-essential`, `g++`.  (List taken from this comment:
+https://gist.github.com/mattrude/3883a3801613b048d45b#gistcomment-2378027).
+
+When building from Git, additional software is needed, in particular Git,
+Automake, and more recent version of Gettext.  Note that Gettext available in
+Ubuntu Trusty is too old for this purpose, and that makes building from Git
+in Travis CI environment bit more difficult.
+
+== Scripts
+
+NOTE: Most likely you'll want to run `install_gpg_all.sh`, however
+`install_gpg_component.sh` gives greater flexibility.
+
+=== `install_gpg_component.sh`
+
+Builds and installs a specific component of GPG.
+
+Three options are mandatory:
+
+* `--component`, which specifies a component name
+* `--version`, which specifies component version (can be `latest`)
+* `--build-dir`, which specifies a directory that the source code should be
+  fetched into, and where compilation should happen.
+
+For example, following snippet will build and install the most recent release
+of Pinentry:
+
+[source,bash]
+----
+./install_gpg_component.sh \
+  --component pinentry \
+  --version latest \
+  --build-dir ./build-gpg
+----
+
+Furthermore, script is capable of fetching source from Git repository (instead
+of downloading tarballs with stable releases).  In such case, a `--git` option
+should be supplied, and `--version` should specify the desired Git ref. For
+example, following will build the current master of Pinentry component:
+
+[source,bash]
+----
+./install_gpg_component.sh \
+  --component pinentry \
+  --version master \
+  --git \
+  --build-dir ~/build-gpg
+----
+
+Run script with `--help` option in order to display a more detailed
+documentation:
+
+[source,bash]
+----
+./install_gpg_component.sh --help
+----
+
+=== `install_gpg_all.sh`
+
+Builds and installs all components of GPG.  The first parameter describes
+the desired version of GPG.  Supported values are: `2.1`, `2.2`, `latest`, and
+`master`.  Other components are installed in best-matching versions, which is
+defined as follows:
+
+* For `2.1`, as in this Gist: https://gist.github.com/mattrude/3883a3801613b048d45b
+* For `2.2`, as in this Gist: https://gist.github.com/vt0r/a2f8c0bcb1400131ff51
+* For `latest`, most recent ones
+* For `master`, whatever is currently on `master` branch in Git.
+
+Prefer `latest` over `2.2`.
+
+Any other parameters supplied will be passed to `install_gpg_component.sh`.
+In particular, `--build-dir` is required.
+
+For example, following snippet will install the freshest GPG, and its components
+without documentation:
+
+[source,bash]
+----
+./install_gpg_all.sh \
+  latest \
+  --build-dir ~/build-gpg \
+  --configure-opts "--disable-doc"
+----
+
+== Passing options to `./configure` script
+
+The `--configure-opts` allows to pass options to `./configure` scripts.  For
+example:
+
+[source,bash]
+----
+./install_gpg_component.sh \
+  --component pinentry \
+  --version latest \
+  --build-dir ~/build-gpg \
+  --configure-opts "--enable-pinentry-qt --enable-pinentry-curses"
+----
+
+Setting a custom installation prefix is not that straightforward.
+The `./configure` script assumes that all the dependencies are installed in
+`/usr/lib`, hence you need to override them as in example:
+
+[source,bash]
+----
+./install_gpg_all.sh \
+  latest \
+  --build-dir ~/build-gpg \
+  --configure-opts "\
+    --prefix=/opt/gpg \
+    --with-libgpg-error-prefix=/opt/gpg \
+    --with-libassuan-prefix=/opt/gpg \
+    --with-libgpg-error-prefix=/opt/gpg \
+    --with-libgcrypt-prefix=/opt/gpg \
+    --with-libassuan-prefix=/opt/gpg \
+    --with-ksba-prefix=/opt/gpg \
+    --with-npth-prefix=/opt/gpg"
+----
+
+You may see a bunch of warnings as some of these options are relevant only to
+few components, but that won't break your build.
+
+== Using with Travis CI
+
+This scripts have been designed to work in Travis CI.  Use following listing
+as example of `.travis.yml`:
+
+[source,yaml]
+----
+dist: trusty
+sudo: required
+language: ruby
+
+env:
+  global:
+    - GPG_BUILD_DIR="$TRAVIS_BUILD_DIR/build_gpg"
+    - >
+      GPG_CONFIGURE_OPTS="--disable-doc --enable-pinentry-curses
+      --disable-pinentry-emacs --disable-pinentry-gtk2 --disable-pinentry-gnome3
+      --disable-pinentry-qt --disable-pinentry-qt4 --disable-pinentry-qt5
+      --disable-pinentry-tqt --disable-pinentry-fltk"
+
+  matrix:
+    - GPG_VERSION="latest"
+    - GPG_VERSION="2.1"
+
+before_install:
+  - ./install_gpg_all.sh "$GPG_VERSION" --build-dir "$GPG_BUILD_DIR" --configure-opts "$GPG_CONFIGURE_OPTS" --folding-style travis
+  - gem install bundler -v 1.16.1
+----
+
+Please note the `--folding-style travis` option.  It makes the job logs more
+readable, as it divides the output of build steps into foldable sections.
