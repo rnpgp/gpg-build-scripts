@@ -206,6 +206,9 @@ fetch_from_git()
 
 build_and_install()
 {
+	local _sudo=""
+	[[ "${_arg_sudo}" = "on" ]] && _sudo=sudo
+
 	pushd "${_component_build_dir}"
 	if [ ! -f configure ]; then
 		fold_start "component.${_arg_component}.autogen"
@@ -219,7 +222,7 @@ build_and_install()
 	make > /dev/null
 	fold_end "component.${_arg_component}.build"
 	fold_start "component.${_arg_component}.install"
-	sudo make install > /dev/null
+	${_sudo} make install > /dev/null
 	fold_end "component.${_arg_component}.install"
 	popd
 }
