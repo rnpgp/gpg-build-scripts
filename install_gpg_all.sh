@@ -37,16 +37,6 @@ usage() {
 	exit 1
 }
 
-prequisites_yum() {
-	yum install -y bzip2 gcc make sudo
-}
-
-detect_platform() {
-	# Determine OS platform
-	DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | tr -d \")
-	echo "$DISTRO"
-}
-
 main() {
 
 	while getopts ":t:idh" o; do
@@ -75,15 +65,6 @@ main() {
 
 	[[ ! "$TEMP_BUILD_DIR" ]] && \
 		TEMP_BUILD_DIR="$(mktemp -d)"
-
-	DISTRO="$(detect_platform)"
-
-	case $DISTRO in
-		"CentOS Linux")
-			echo "Installing CentOS yum dependencies"
-			prequisites_yum
-			;;
-	esac
 
 	case "$GPG_VERSION" in
 		"2.2")
