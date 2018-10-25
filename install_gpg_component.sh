@@ -41,9 +41,11 @@ OPTIONS
 		pass branch or tag name to --version argument.  By default it is off.
 
 	--[no-]sudo
-		Whether to do 'sudo make install', or just 'make install'.
-		Doesn't affect post install steps, which may require sudo.  By default
-		it is off.
+		Whether to do 'sudo make install', or just 'make install', and whether
+		to update ldconfig configuration. Note that the ldconfig update is
+		currently hardcoded to '/usr/local/lib' and so will not honor
+		'--prefix' configure options changes. Consider 'LD_LIBRARY_PATH' in
+		these cases. By default it is off.
 
 	--configure-opts OPTS
 		Options to be passed to "./configure" script.
@@ -294,7 +296,7 @@ fetch_source
 build_and_install
 popd # _arg_build_dir
 
-if [[ "${_arg_component}" =~ ^gnupg ]]; then
+if [[ "${_arg_component}" =~ ^gnupg ]] && [[ "${_arg_sudo}" = "on" ]]; then
 	fold_start "component.${_arg_component}.post-install"
 	sudo tee -a /etc/ld.so.conf.d/gpg2.conf <<<"/usr/local/lib"
 	sudo ldconfig -v
