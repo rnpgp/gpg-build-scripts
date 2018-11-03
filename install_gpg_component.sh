@@ -194,16 +194,16 @@ fetch_from_git()
 
 	if [ ! -d "${_component_build_dir}" ]; then
 		git clone ${_git_url} "${_component_build_dir}"
+		pushd "${_component_build_dir}"
+		git checkout ${_arg_version}
+		popd
 	else
 		pushd "${_component_build_dir}"
 		git fetch # need to fetch prior checkout, ref may be nonexistent locally
+		git checkout ${_arg_version}
+		git pull # in case of outdated local branch
 		popd
 	fi
-
-	pushd "${_component_build_dir}"
-	git checkout ${_arg_version}
-	git pull # in case of outdated local branch
-	popd
 }
 
 build_and_install()
