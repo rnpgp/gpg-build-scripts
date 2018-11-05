@@ -1,0 +1,28 @@
+dist: trusty
+sudo: false
+
+install:
+
+script:
+  - examples/${SCRIPT}.sh
+
+matrix:
+  include:
+    - env: SCRIPT="all_latest"
+      sudo: required
+    - env: SCRIPT="all_head"
+      sudo: required
+    - env: SCRIPT="all_2.2"
+      sudo: required
+    - env: SCRIPT="all_2.1"
+      sudo: required
+    - env: SCRIPT="build_dir"
+      sudo: required
+    - env: SCRIPT="configure_options"
+      sudo: required
+    - env: SCRIPT="install_prefix"
+      sudo: required
+    - env: SCRIPT="no_sudo"
+      sudo: false
+    - env: SCRIPT="components_individually"
+      sudo: required
