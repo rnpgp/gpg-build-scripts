@@ -17,8 +17,9 @@ in Travis CI environment bit more difficult.
 
 == Scripts
 
-NOTE: Most likely you'll want to run `install_gpg_all.sh`, however
-`install_gpg_component.sh` gives greater flexibility.
+TIP: Most likely you'll want to run `install_gpg_all.sh`, however
+`install_gpg_component.sh` gives greater flexibility.  Oh, and check out
+the `examples` subdirectory.
 
 === `install_gpg_component.sh`
 

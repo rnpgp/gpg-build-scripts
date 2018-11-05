@@ -1,0 +1,32 @@
+This directory contains usage examples for `gpg-build-scripts`.  This README
+document describes these examples.
+
+Every example is tested in Travis CI.  They all together comprise a test suite
+for `gpg-build-scripts`.  Every example is arranged as follows: it begins
+with a variable definitions block, which is followed with actual installation
+commands, and ends with a sequence of assertions which confirm installation
+correctness.  Every example includes comments.
+
+`all_latest.sh`::
+	Shows how to install the latest versions of GnuPG components with default
+	options.  Requires to be executed as sudoer.  This is the example you should
+	checkout first, probably.
+`all_2.2.sh`::
+	Same as above, but installs GnuPG 2.2.  Component versions are frozen,
+	and are not necessarily the latest ones.
+`all_2.1.sh`::
+	Same as above, but installs GnuPG 2.1.  Component versions are frozen.
+`all_head.sh`::
+	Shows how to install all GnuPG components from Git, as of current master.
+`build_dir.sh`::
+	Shows how to perform the build in a custom directory.  Potentially useful
+	when one wants to cache the source code, or inspect the failed build.
+`configure_options.sh`::
+	Shows how to pass various options to the configure script.
+`install_prefix.sh`::
+	Shows how to install GnuPG into an arbitrary location.
+`no_sudo.sh`::
+	Shows how to install GnuPG without root privileges.
+`components_individually.sh`::
+	Shows how to install individual GnuPG components, one by one.  Allows for
+	fine-grained configuration.
