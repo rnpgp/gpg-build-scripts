@@ -28,7 +28,7 @@ Builds and installs a specific component of GPG.
 Two options are mandatory:
 
 * `--component`, which specifies a component name
-* `--version`, which specifies component version (can be `latest`)
+* `--component-version`, which specifies component version (can be `latest`)
 
 For example, following snippet will build and install the most recent release
 of Pinentry:
@@ -37,19 +37,19 @@ of Pinentry:
 ----
 ./install_gpg_component.sh \
   --component pinentry \
-  --version latest
+  --component-version latest
 ----
 
 Furthermore, script is capable of fetching source from Git repository (instead
 of downloading tarballs with stable releases).  In such case, a `--git` option
-should be supplied, and `--version` should specify the desired Git ref. For
+should be supplied, and `--component-version` should specify the desired Git ref. For
 example, following will build the current master of Pinentry component:
 
 [source,bash]
 ----
 ./install_gpg_component.sh \
   --component pinentry \
-  --version master \
+  --component-version master \
   --git
 ----
 
@@ -97,7 +97,7 @@ example:
 ----
 ./install_gpg_component.sh \
   --component pinentry \
-  --version latest \
+  --component-version latest \
   --build-dir ~/build-gpg \
   --configure-opts "--enable-pinentry-qt --enable-pinentry-curses"
 ----

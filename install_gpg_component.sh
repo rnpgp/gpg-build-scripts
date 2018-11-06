@@ -15,30 +15,30 @@ USAGE
 EXAMPLES
 
 	# Installing latest version of libgpg-error
-	install_gpg_component.rb --component libgpg-error --version latest
+	install_gpg_component.rb --component libgpg-error --component-version latest
 
 	# Installing latest version of libgpg-error with sudo
-	install_gpg_component.rb --component libgpg-error --version latest --sudo
+	install_gpg_component.rb --component libgpg-error --component-version latest --sudo
 
 	# Installing latest git revision of libgpg-error
-	install_gpg_component.rb --component libgpg-error --version master --git
+	install_gpg_component.rb --component libgpg-error --component-version master --git
 
 	# Passing options to ./configure script
-	install_gpg_component.rb --component libgpg-error --version latest --configure-opts "--disable-doc --exec-prefix=/my/bin"
+	install_gpg_component.rb --component libgpg-error --component-version latest --configure-opts "--disable-doc --exec-prefix=/my/bin"
 
 OPTIONS
 
 	--component COMPONENT
 		Component to install
 
-	--version VERSION
+	--component-version VERSION
 		Component version to install (use "latest" for the latest release),
 		or git ref (branch, tag, commit hash etc.) when used with "--git"
 		option (typically "master").
 
 	--[no-]git
 		Fetch source code from git repository instead of downloading release,
-		pass branch or tag name to --version argument.  By default it is off.
+		pass branch or tag name to --component-version argument.  By default it is off.
 
 	--[no-]sudo
 		Whether to do 'sudo make install', or just 'make install', and whether
@@ -92,7 +92,7 @@ parse_cli_arguments()
 				shift
 				shift
 				;;
-			--version)
+			--component-version)
 				_arg_version="$2"
 				shift
 				shift

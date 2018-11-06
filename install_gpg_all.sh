@@ -80,40 +80,40 @@ main() {
 
 	case "$GPG_VERSION" in
 		"2.2")
-			./install_gpg_component.sh --component libgpg-error --version 1.31 "${@:2}"
-			./install_gpg_component.sh --component libgcrypt --version 1.8.2 "${@:2}"
-			./install_gpg_component.sh --component libassuan --version 2.5.1 "${@:2}"
-			./install_gpg_component.sh --component libksba --version 1.3.5 "${@:2}"
-			./install_gpg_component.sh --component npth --version 1.5 "${@:2}"
-			./install_gpg_component.sh --component pinentry --version 1.1.0 "${@:2}"
-			./install_gpg_component.sh --component gnupg --version 2.2.7 "${@:2}"
+			./install_gpg_component.sh --component libgpg-error --component-version 1.31 "${@:2}"
+			./install_gpg_component.sh --component libgcrypt --component-version 1.8.2 "${@:2}"
+			./install_gpg_component.sh --component libassuan --component-version 2.5.1 "${@:2}"
+			./install_gpg_component.sh --component libksba --component-version 1.3.5 "${@:2}"
+			./install_gpg_component.sh --component npth --component-version 1.5 "${@:2}"
+			./install_gpg_component.sh --component pinentry --component-version 1.1.0 "${@:2}"
+			./install_gpg_component.sh --component gnupg --component-version 2.2.7 "${@:2}"
 			;;
 		"2.1")
-			./install_gpg_component.sh --component libgpg-error --version 1.27 "${@:2}"
-			./install_gpg_component.sh --component libgcrypt --version 1.7.6 "${@:2}"
-			./install_gpg_component.sh --component libassuan --version 2.4.3 "${@:2}"
-			./install_gpg_component.sh --component libksba --version 1.3.5 "${@:2}"
-			./install_gpg_component.sh --component npth --version 1.2 "${@:2}"
-			./install_gpg_component.sh --component pinentry --version 0.9.5 "${@:2}"
-			./install_gpg_component.sh --component gnupg --version 2.1.20 "${@:2}"
+			./install_gpg_component.sh --component libgpg-error --component-version 1.27 "${@:2}"
+			./install_gpg_component.sh --component libgcrypt --component-version 1.7.6 "${@:2}"
+			./install_gpg_component.sh --component libassuan --component-version 2.4.3 "${@:2}"
+			./install_gpg_component.sh --component libksba --component-version 1.3.5 "${@:2}"
+			./install_gpg_component.sh --component npth --component-version 1.2 "${@:2}"
+			./install_gpg_component.sh --component pinentry --component-version 0.9.5 "${@:2}"
+			./install_gpg_component.sh --component gnupg --component-version 2.1.20 "${@:2}"
 			;;
 		"latest")
-			./install_gpg_component.sh --component libgpg-error --version latest "${@:2}"
-			./install_gpg_component.sh --component libgcrypt --version latest "${@:2}"
-			./install_gpg_component.sh --component libassuan --version latest "${@:2}"
-			./install_gpg_component.sh --component libksba --version latest "${@:2}"
-			./install_gpg_component.sh --component npth --version latest "${@:2}"
-			./install_gpg_component.sh --component pinentry --version latest "${@:2}"
-			./install_gpg_component.sh --component gnupg --version latest "${@:2}"
+			./install_gpg_component.sh --component libgpg-error --component-version latest "${@:2}"
+			./install_gpg_component.sh --component libgcrypt --component-version latest "${@:2}"
+			./install_gpg_component.sh --component libassuan --component-version latest "${@:2}"
+			./install_gpg_component.sh --component libksba --component-version latest "${@:2}"
+			./install_gpg_component.sh --component npth --component-version latest "${@:2}"
+			./install_gpg_component.sh --component pinentry --component-version latest "${@:2}"
+			./install_gpg_component.sh --component gnupg --component-version latest "${@:2}"
 			;;
 		"master")
-			./install_gpg_component.sh --component libgpg-error --version master --git "${@:2}"
-			./install_gpg_component.sh --component libgcrypt --version master --git "${@:2}"
-			./install_gpg_component.sh --component libassuan --version master --git "${@:2}"
-			./install_gpg_component.sh --component libksba --version master --git "${@:2}"
-			./install_gpg_component.sh --component npth --version master --git "${@:2}"
-			./install_gpg_component.sh --component pinentry --version master --git "${@:2}"
-			./install_gpg_component.sh --component gnupg --version master --git "${@:2}"
+			./install_gpg_component.sh --component libgpg-error --component-version master --git "${@:2}"
+			./install_gpg_component.sh --component libgcrypt --component-version master --git "${@:2}"
+			./install_gpg_component.sh --component libassuan --component-version master --git "${@:2}"
+			./install_gpg_component.sh --component libksba --component-version master --git "${@:2}"
+			./install_gpg_component.sh --component npth --component-version master --git "${@:2}"
+			./install_gpg_component.sh --component pinentry --component-version master --git "${@:2}"
+			./install_gpg_component.sh --component gnupg --component-version master --git "${@:2}"
 			;;
 	esac
 
