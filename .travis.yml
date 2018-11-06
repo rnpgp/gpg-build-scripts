@@ -26,3 +26,5 @@ matrix:
       sudo: false
     - env: SCRIPT="components_individually"
       sudo: required
+    - env: SCRIPT="folding_travis"
+      sudo: required
