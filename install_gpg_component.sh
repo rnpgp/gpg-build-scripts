@@ -169,7 +169,7 @@ determine_latest_version()
 		head -n 1 |
 		cut -d " " -f 2`
 	echo "The latest version of ${_arg_component} is ${_arg_version}."
-	fold_end "component.${_arg_component}.fetch"
+	fold_end "component.${_arg_component}.detect-latest"
 }
 
 fetch_source()
