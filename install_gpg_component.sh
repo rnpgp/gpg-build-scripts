@@ -53,6 +53,7 @@ OPTIONS
 	--build-dir DIR
 		Directory in which the compilation will happen.  Content may be
 		overwritten during build.  Directory will be created if non-existent.
+		If not set, a temporary directory will be created.
 
 	--folding-style STYLE
 		If set, enables output folding.  STYLE defines the folding notation
@@ -149,7 +150,7 @@ component: "${_arg_component}"
 version: "${_arg_version}"
 git: "${_arg_git}"
 sudo: "${_arg_sudo}"
-build_dir: "${_arg_build_dir}"
+build_dir: "${_arg_build_dir:-<temporary directory>}"
 configure_options: "${_arg_configure_opts}"
 
 CONFIG
@@ -170,6 +171,19 @@ determine_latest_version()
 		cut -d " " -f 2`
 	echo "The latest version of ${_arg_component} is ${_arg_version}."
 	fold_end "component.${_arg_component}.detect-latest"
+}
+
+create_temporary_build_dir()
+{
+	readonly _temporary_build_dir="$(mktemp -d --tmpdir "gpg-build.XXXXXXXX")"
+	trap remove_temporary_build_dir EXIT
+	echo "Building in temporary directory '${_temporary_build_dir}'."
+	_arg_build_dir=${_temporary_build_dir}
+}
+
+remove_temporary_build_dir()
+{
+	rm -rf "${_temporary_build_dir}"
 }
 
 fetch_source()
@@ -296,7 +310,12 @@ if [[ "${_arg_version}" =~ ^latest ]]; then
 	determine_latest_version
 fi
 
-mkdir -p ${_arg_build_dir}
+if [ "x${_arg_build_dir}" == "x" ]; then
+	create_temporary_build_dir
+else
+	mkdir -p ${_arg_build_dir}
+fi
+
 pushd ${_arg_build_dir}
 fetch_source
 build_and_install

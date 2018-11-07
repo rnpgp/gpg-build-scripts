@@ -16,28 +16,21 @@ set -v # Print executed lines
 #    SETUP    #
 ###############
 
-# The install_gpg_component.sh script requires passing a --build-dir option.
 BUILD_DIR="${TRAVIS_BUILD_DIR}/b"
 
 # Install specific versions of some components.  Disable documentation for
 # libgpg-error, and enable it (default) for other components.
 # In order to satisfy dependencies, components should be installed
 # in a specific order.
-./install_gpg_component.sh --component libgpg-error --version latest \
-  --build-dir "${BUILD_DIR}" --sudo \
+./install_gpg_component.sh --component libgpg-error --version latest --sudo \
   --configure-opts "--disable-doc"
-./install_gpg_component.sh --component libgcrypt --version latest \
-  --build-dir "${BUILD_DIR}" --sudo
-./install_gpg_component.sh --component libassuan --version latest \
-  --build-dir "${BUILD_DIR}" --sudo
-./install_gpg_component.sh --component libksba --version latest \
-  --build-dir "${BUILD_DIR}" --sudo
-./install_gpg_component.sh --component npth --version latest \
-  --build-dir "${BUILD_DIR}" --sudo
-./install_gpg_component.sh --component pinentry --version 1.1.0 \
-  --build-dir "${BUILD_DIR}" --sudo
-./install_gpg_component.sh --component gnupg --version 2.2.10 \
-  --build-dir "${BUILD_DIR}" --sudo \
+./install_gpg_component.sh --component libgcrypt --version latest --sudo \
+  --build-dir "${BUILD_DIR}"
+./install_gpg_component.sh --component libassuan --version latest --sudo
+./install_gpg_component.sh --component libksba --version latest --sudo
+./install_gpg_component.sh --component npth --version latest --sudo
+./install_gpg_component.sh --component pinentry --version 1.1.0 --sudo
+./install_gpg_component.sh --component gnupg --version 2.2.10  --sudo \
   --configure-opts "--enable-gpg-sha256 --disable-gpg-sha512 --enable-doc"
 
 ###############
@@ -60,3 +53,11 @@ gpg --version | grep -i "SHA256"
 # Assert disabled docs for libgpg-error, and enabled for other packages…
 [[   -f "/usr/local/share/man/man1/gpg.1" ]]
 [[ ! -f "/usr/local/share/man/man1/gpg-error-config.1" ]]
+
+# Assert that building the libgcrypt component has happened in a $BUILD_DIR,
+# and no other component was built there…
+pushd ${BUILD_DIR}
+ls -d libgcrypt-*
+[[ ! $(ls . | grep -v "libgcrypt-") ]]
+[[ -f "$(ls | grep "libgcrypt-")/Makefile" ]]
+popd
