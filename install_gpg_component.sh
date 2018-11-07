@@ -161,7 +161,13 @@ determine_latest_version()
 {
 	fold_start "component.${_arg_component}.detect-latest"
 	local _component_underscored=`echo "${_arg_component}" | tr - _`
-	_arg_version=`curl "https://versions.gnupg.org/swdb.lst" | grep "_ver" | grep -v "w32" | sort --reverse | grep "${_component_underscored}" | head -n 1 | cut -d " " -f 2`
+	_arg_version=`curl "https://versions.gnupg.org/swdb.lst" |
+		grep "_ver" |
+		grep -v "w32" |
+		sort --reverse |
+		grep "${_component_underscored}" |
+		head -n 1 |
+		cut -d " " -f 2`
 	echo "The latest version of ${_arg_component} is ${_arg_version}."
 	fold_end "component.${_arg_component}.fetch"
 }
