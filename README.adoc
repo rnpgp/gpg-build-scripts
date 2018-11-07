@@ -25,12 +25,10 @@ the `examples` subdirectory.
 
 Builds and installs a specific component of GPG.
 
-Three options are mandatory:
+Two options are mandatory:
 
 * `--component`, which specifies a component name
 * `--version`, which specifies component version (can be `latest`)
-* `--build-dir`, which specifies a directory that the source code should be
-  fetched into, and where compilation should happen.
 
 For example, following snippet will build and install the most recent release
 of Pinentry:
@@ -39,8 +37,7 @@ of Pinentry:
 ----
 ./install_gpg_component.sh \
   --component pinentry \
-  --version latest \
-  --build-dir ./build-gpg
+  --version latest
 ----
 
 Furthermore, script is capable of fetching source from Git repository (instead
@@ -53,8 +50,7 @@ example, following will build the current master of Pinentry component:
 ./install_gpg_component.sh \
   --component pinentry \
   --version master \
-  --git \
-  --build-dir ~/build-gpg
+  --git
 ----
 
 Run script with `--help` option in order to display a more detailed
@@ -80,7 +76,6 @@ defined as follows:
 Prefer `latest` over `2.2`.
 
 Any other parameters supplied will be passed to `install_gpg_component.sh`.
-In particular, `--build-dir` is required.
 
 For example, following snippet will install the freshest GPG, and its components
 without documentation:
