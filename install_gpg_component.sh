@@ -15,20 +15,20 @@ USAGE
 EXAMPLES
 
 	# Installing latest version of libgpg-error
-	install_gpg_component.rb --component libgpg-error --component-version latest
+	install_gpg_component.rb --component-name libgpg-error --component-version latest
 
 	# Installing latest version of libgpg-error with sudo
-	install_gpg_component.rb --component libgpg-error --component-version latest --sudo
+	install_gpg_component.rb --component-name libgpg-error --component-version latest --sudo
 
 	# Installing latest git revision of libgpg-error
-	install_gpg_component.rb --component libgpg-error --component-version master --git
+	install_gpg_component.rb --component-name libgpg-error --component-version master --git
 
 	# Passing options to ./configure script
-	install_gpg_component.rb --component libgpg-error --component-version latest --configure-opts "--disable-doc --exec-prefix=/my/bin"
+	install_gpg_component.rb --component-name libgpg-error --component-version latest --configure-opts "--disable-doc --exec-prefix=/my/bin"
 
 OPTIONS
 
-	--component COMPONENT
+	--component-name COMPONENT
 		Component to install
 
 	--component-version VERSION
@@ -87,7 +87,7 @@ parse_cli_arguments()
 	while test $# -gt 0
 	do
 		case "$1" in
-			--component)
+			--component-name)
 				_arg_component="$2"
 				shift
 				shift
