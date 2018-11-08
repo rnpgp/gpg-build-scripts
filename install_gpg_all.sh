@@ -107,13 +107,13 @@ main() {
 			./install_gpg_component.sh --component-name gnupg --component-version latest "${@:2}"
 			;;
 		"master")
-			./install_gpg_component.sh --component-name libgpg-error --component-version master --git "${@:2}"
-			./install_gpg_component.sh --component-name libgcrypt --component-version master --git "${@:2}"
-			./install_gpg_component.sh --component-name libassuan --component-version master --git "${@:2}"
-			./install_gpg_component.sh --component-name libksba --component-version master --git "${@:2}"
-			./install_gpg_component.sh --component-name npth --component-version master --git "${@:2}"
-			./install_gpg_component.sh --component-name pinentry --component-version master --git "${@:2}"
-			./install_gpg_component.sh --component-name gnupg --component-version master --git "${@:2}"
+			./install_gpg_component.sh --component-name libgpg-error --component-git-ref master --git "${@:2}"
+			./install_gpg_component.sh --component-name libgcrypt --component-git-ref master --git "${@:2}"
+			./install_gpg_component.sh --component-name libassuan --component-git-ref master --git "${@:2}"
+			./install_gpg_component.sh --component-name libksba --component-git-ref master --git "${@:2}"
+			./install_gpg_component.sh --component-name npth --component-git-ref master --git "${@:2}"
+			./install_gpg_component.sh --component-name pinentry --component-git-ref master --git "${@:2}"
+			./install_gpg_component.sh --component-name gnupg --component-git-ref master --git "${@:2}"
 			;;
 	esac
 

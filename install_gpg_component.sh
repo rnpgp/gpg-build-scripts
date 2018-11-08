@@ -21,7 +21,7 @@ EXAMPLES
 	install_gpg_component.rb --component-name libgpg-error --component-version latest --sudo
 
 	# Installing latest git revision of libgpg-error
-	install_gpg_component.rb --component-name libgpg-error --component-version master --git
+	install_gpg_component.rb --component-name libgpg-error --component-git-ref master
 
 	# Passing options to ./configure script
 	install_gpg_component.rb --component-name libgpg-error --component-version latest --configure-opts "--disable-doc --exec-prefix=/my/bin"
@@ -33,12 +33,16 @@ OPTIONS
 
 	--component-version VERSION
 		Component version to install (use "latest" for the latest release),
-		or git ref (branch, tag, commit hash etc.) when used with "--git"
+		or git ref (branch, tag, commit hash etc.) when used with "--component-git-ref"
 		option (typically "master").
 
-	--[no-]git
+		Either --component-version or --component-git-ref is mandatory.
+
+	--component-git-ref REF
 		Fetch source code from git repository instead of downloading release,
-		pass branch or tag name to --component-version argument.  By default it is off.
+		use branch or tag name specified by REF argument (typically "master").
+
+		Either --component-version or --component-git-ref is mandatory.
 
 	--[no-]sudo
 		Whether to do 'sudo make install', or just 'make install', and whether
@@ -94,6 +98,7 @@ parse_cli_arguments()
 				;;
 			--component-version)
 				_arg_version="$2"
+				_arg_git="off"
 				shift
 				shift
 				;;
@@ -115,12 +120,10 @@ parse_cli_arguments()
 				_arg_sudo="off"
 				shift
 				;;
-			--git)
+			--component-git-ref)
+				_arg_version="$2"
 				_arg_git="on"
 				shift
-				;;
-			--no-git)
-				_arg_git="off"
 				shift
 				;;
 			--folding-style)
