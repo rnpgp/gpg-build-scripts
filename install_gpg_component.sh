@@ -12,6 +12,10 @@ USAGE
 
 	install_gpg_component.rb <options>
 
+DESCRIPTION
+
+	Installs a single component of GnuPG suite.
+
 EXAMPLES
 
 	# Installing latest version of libgpg-error
@@ -29,7 +33,7 @@ EXAMPLES
 OPTIONS
 
 	--component-name COMPONENT
-		Component to install
+		Component to install.  This option is mandatory.
 
 	--component-version VERSION
 		Component version to install (use "latest" for the latest release),

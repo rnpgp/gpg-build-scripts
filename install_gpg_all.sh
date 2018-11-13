@@ -8,7 +8,54 @@
 print_help ()
 {
 	cat <<HELP
-install_gpg_all.sh <options> <component options>
+USAGE
+
+	install_gpg_all.sh <options> <component options>
+
+DESCRIPTION
+
+	Installs a whole GnuPG suite.
+
+	All arguments which are not recognized by this script are forwarded to
+	install_gpg_component.sh script (<component options>).  They must be
+	specified after <options> (if any).
+
+EXAMPLES
+
+	# Installing latest version of all GnuPG software
+	install_gpg_component.sh --suite-version latest
+
+	# Installing GnuPG 2.1
+	install_gpg_component.sh --suite-version 2.1
+
+	# Passing options to install_gpg_component.sh scripts
+	install_gpg_component.sh --suite-version latest --sudo
+
+OPTIONS
+
+	--suite-version VERSION
+
+		Defines which version of GnuPG components should be installed.  Default
+		is "latest".
+
+		Following values for VERSION are supported:
+
+		"2.2"
+			GnuPG 2.2, and matching dependencies.
+
+		"2.1"
+			GnuPG 2.1, and matching dependencies.
+
+		"latest"
+			Latest version of GnuPG, and its dependecies.  Prefer "latest"
+			over "2.2".
+
+		"master"
+			Install all GnuPG components from Git master branch.
+
+	--help, -h
+		Displays this message.
+
 HELP
 }
 
