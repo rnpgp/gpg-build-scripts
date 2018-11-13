@@ -22,7 +22,7 @@ mkdir -p ${BUILD_DIR}
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
 # root (not recommended), and won't trigger post-install steps (including
 # ldconfig).
-./install_gpg_all.sh 2.2 --sudo --build-dir ${BUILD_DIR}
+./install_gpg_all.sh --suite-version 2.2 --sudo --build-dir ${BUILD_DIR}
 
 ###############
 #    TESTS    #

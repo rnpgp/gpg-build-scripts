@@ -14,7 +14,7 @@ set -v # Print executed lines
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
 # root (not recommended), and won't trigger post-install steps (including
 # ldconfig).
-./install_gpg_all.sh master --sudo
+./install_gpg_all.sh --suite-version master --sudo
 
 ###############
 #    TESTS    #

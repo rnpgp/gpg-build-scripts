@@ -33,7 +33,7 @@ export PATH="${EXEC_PREFIX}/bin:${PATH}"
 
 mkdir -p ${GPG_PREFIX} ${EXEC_PREFIX} ${MAN_DIR}
 
-./install_gpg_all.sh latest --sudo --configure-opts "${GPG_CONFIGURE_OPTS}"
+./install_gpg_all.sh --suite-version latest --sudo --configure-opts "${GPG_CONFIGURE_OPTS}"
 
 ###############
 #    TESTS    #
