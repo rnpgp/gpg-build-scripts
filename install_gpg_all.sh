@@ -1,119 +1,133 @@
-#!/bin/bash
-
-# Popular combinations of GPG software versions.
+#!/usr/bin/env bash
 #
-# For v2.2: https://gist.github.com/vt0r/a2f8c0bcb1400131ff51
-# For v2.1: https://gist.github.com/mattrude/3883a3801613b048d45b
-#
-# USAGE:
-#   ./install_gpg_all.sh <version> [<options>]
-#
-# EXAMPLE
-#   ./install_gpg_all.sh 2.2
 
-set -e
+######################
+# ARGUMENTS HANDLING #
+######################
 
-readonly __progname=$(basename $0)
+print_help ()
+{
+	cat <<HELP
+USAGE
 
-errx() {
-	echo -e "$__progname: $@" >&2
-	exit 1
+	install_gpg_all.sh <options> <component options>
+
+DESCRIPTION
+
+	Installs a whole GnuPG suite.
+
+	All arguments which are not recognized by this script are forwarded to
+	install_gpg_component.sh script (<component options>).  They must be
+	specified after <options> (if any).
+
+EXAMPLES
+
+	# Installing latest version of all GnuPG software
+	install_gpg_component.sh --suite-version latest
+
+	# Installing GnuPG 2.1
+	install_gpg_component.sh --suite-version 2.1
+
+	# Passing options to install_gpg_component.sh scripts
+	install_gpg_component.sh --suite-version latest --sudo
+
+OPTIONS
+
+	--suite-version VERSION
+
+		Defines which version of GnuPG components should be installed.  Default
+		is "latest".
+
+		Following values for VERSION are supported:
+
+		"2.2"
+			GnuPG 2.2, and matching dependencies.
+
+		"2.1"
+			GnuPG 2.1, and matching dependencies.
+
+		"latest"
+			Latest version of GnuPG, and its dependecies.  Prefer "latest"
+			over "2.2".
+
+		"master"
+			Install all GnuPG components from Git master branch.
+
+	--help, -h
+		Displays this message.
+
+HELP
 }
 
-usage() {
-	echo "usage: $__progname [-i <GPG_VERSION>] [-d]"
-	echo ""
-	echo "  Options:"
-	echo "  -d for dry run, not building GPG components."
-	echo "  -i to select the GPG version to install [major.minor], defaults to `latest`."
-	echo "      - `latest`: latest version of GnuPG."
-	echo "      - `x.y`: specific version x.y of GnuPG, e.g. `2.2`."
-	echo "      - `master`: build from GnuPG git master branch."
-	echo "  -h to display this message"
-	echo ""
-	echo "  Arguments can also be set via environment variables: "
-	echo "  - GPG_VERSION"
-	exit 1
+set_default_options()
+{
+	_arg_suite="latest"
+	_arr_component_options=()
 }
 
-prequisites_yum() {
-	yum install -y bzip2 gcc make sudo
-}
-
-detect_platform() {
-	# Determine OS platform
-	DISTRO=$(awk -F= '/^NAME/{print $2}' /etc/os-release | tr -d \")
-	echo "$DISTRO"
-}
-
-main() {
-
-	while getopts ":idh" o; do
-		case "${o}" in
-		i)
-			readonly local GPG_VERSION=${OPTARG}
-			;;
-		d)
-			readonly local DRYRUN=1
-			;;
-		h)
-			usage
-			;;
-		*)
-			usage
-			;;
+parse_cli_arguments()
+{
+	while test $# -gt 0
+	do
+		case "$1" in
+			--suite-version)
+				_arg_suite="$2"
+				shift
+				shift
+				;;
+			-h|--help)
+				print_help
+				exit 0
+				;;
+			*)
+				_arr_component_options=("${@}")
+				break
 		esac
 	done
+}
 
-	if [ "x$GPG_VERSION" == "x" ]; then
-		GPG_VERSION="latest"
-	fi
+######################
+#      BUILDING      #
+######################
 
-	DISTRO="$(detect_platform)"
-
-	case $DISTRO in
-		"CentOS Linux")
-			echo "Installing CentOS yum dependencies"
-			prequisites_yum
-			;;
-	esac
-
-	case "$GPG_VERSION" in
+install_suite()
+{
+	case "${_arg_suite}" in
 		"2.2")
-			./install_gpg_component.sh --component libgpg-error --version 1.31 "${@:2}"
-			./install_gpg_component.sh --component libgcrypt --version 1.8.2 "${@:2}"
-			./install_gpg_component.sh --component libassuan --version 2.5.1 "${@:2}"
-			./install_gpg_component.sh --component libksba --version 1.3.5 "${@:2}"
-			./install_gpg_component.sh --component npth --version 1.5 "${@:2}"
-			./install_gpg_component.sh --component pinentry --version 1.1.0 "${@:2}"
-			./install_gpg_component.sh --component gnupg --version 2.2.7 "${@:2}"
+			./install_gpg_component.sh --component-name libgpg-error --component-version 1.31 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libgcrypt --component-version 1.8.2 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libassuan --component-version 2.5.1 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libksba --component-version 1.3.5 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name npth --component-version 1.5 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name pinentry --component-version 1.1.0 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name gnupg --component-version 2.2.7 "${_arr_component_options[@]}"
 			;;
 		"2.1")
-			./install_gpg_component.sh --component libgpg-error --version 1.27 "${@:2}"
-			./install_gpg_component.sh --component libgcrypt --version 1.7.6 "${@:2}"
-			./install_gpg_component.sh --component libassuan --version 2.4.3 "${@:2}"
-			./install_gpg_component.sh --component libksba --version 1.3.5 "${@:2}"
-			./install_gpg_component.sh --component npth --version 1.2 "${@:2}"
-			./install_gpg_component.sh --component pinentry --version 0.9.5 "${@:2}"
-			./install_gpg_component.sh --component gnupg --version 2.1.20 "${@:2}"
+			./install_gpg_component.sh --component-name libgpg-error --component-version 1.27 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libgcrypt --component-version 1.7.6 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libassuan --component-version 2.4.3 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libksba --component-version 1.3.5 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name npth --component-version 1.2 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name pinentry --component-version 0.9.5 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name gnupg --component-version 2.1.20 "${_arr_component_options[@]}"
 			;;
 		"latest")
-			./install_gpg_component.sh --component libgpg-error --version latest "${@:2}"
-			./install_gpg_component.sh --component libgcrypt --version latest "${@:2}"
-			./install_gpg_component.sh --component libassuan --version latest "${@:2}"
-			./install_gpg_component.sh --component libksba --version latest "${@:2}"
-			./install_gpg_component.sh --component npth --version latest "${@:2}"
-			./install_gpg_component.sh --component pinentry --version latest "${@:2}"
-			./install_gpg_component.sh --component gnupg --version latest "${@:2}"
+			./install_gpg_component.sh --component-name libgpg-error --component-version latest "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libgcrypt --component-version latest "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libassuan --component-version latest "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libksba --component-version latest "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name npth --component-version latest "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name pinentry --component-version latest "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name gnupg --component-version latest "${_arr_component_options[@]}"
 			;;
 		"master")
-			./install_gpg_component.sh --component libgpg-error --version master --git "${@:2}"
-			./install_gpg_component.sh --component libgcrypt --version master --git "${@:2}"
-			./install_gpg_component.sh --component libassuan --version master --git "${@:2}"
-			./install_gpg_component.sh --component libksba --version master --git "${@:2}"
-			./install_gpg_component.sh --component npth --version master --git "${@:2}"
-			./install_gpg_component.sh --component pinentry --version master --git "${@:2}"
-			./install_gpg_component.sh --component gnupg --version master --git "${@:2}"
+			./install_gpg_component.sh --component-name libgpg-error --component-git-ref master "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libgcrypt --component-git-ref master "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libassuan --component-git-ref master "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libksba --component-git-ref master "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name npth --component-git-ref master "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name pinentry --component-git-ref master "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name gnupg --component-git-ref master "${_arr_component_options[@]}"
 			;;
 	esac
 
@@ -122,9 +136,27 @@ main() {
 | INSTALL COMPLETE! |
 +-------------------+
 DONE
-
 }
 
-main "$@"
+######################
+#   ERROR HANDLING   #
+######################
+
+readonly __progname=$(basename $0)
+
+errx() {
+	echo -e "$__progname: $@" >&2
+	exit 1
+}
+
+######################
+#        MAIN        #
+######################
+
+set -e # Early exit if any command returns non-zero status code
+
+set_default_options
+parse_cli_arguments "$@"
+install_suite
 
 exit 0

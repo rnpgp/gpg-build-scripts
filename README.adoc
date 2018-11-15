@@ -1,4 +1,4 @@
-A set of build scripts for Gnu Privacy Guard.
+A set of build scripts for GNU Privacy Guard.
 
 image:https://img.shields.io/travis/riboseinc/gpg-build-scripts/master.svg["Build Status", link="https://travis-ci.org/riboseinc/gpg-build-scripts"]
 
@@ -12,8 +12,8 @@ https://gist.github.com/mattrude/3883a3801613b048d45b#gistcomment-2378027).
 
 When building from Git, additional software is needed, in particular Git,
 Automake, and more recent version of Gettext.  Note that Gettext available in
-Ubuntu Trusty is too old for this purpose, and that makes building from Git
-in Travis CI environment bit more difficult.
+Ubuntu Trusty is too old for this purpose--this fact must be taken into account
+when building from Git in Travis CI environment.
 
 == Scripts
 
@@ -23,39 +23,46 @@ the `examples` subdirectory.
 
 === `install_gpg_component.sh`
 
-Builds and installs a specific component of GPG.
+Builds and installs a specific component of GnuPG.  The source code is obtained
+either from released tarballs, or from Git repository.
 
-Two options are mandatory:
+When building stable releases from tarballs, two options are mandatory:
 
-* `--component`, which specifies a component name
-* `--version`, which specifies component version (can be `latest`)
+* `--component-name`, which specifies a component name
+* `--component-version`, which specifies component version (can be `latest`)
 
-For example, following snippet will build and install the most recent release
-of Pinentry:
-
+.Example: building the most recent release of Pinentry.
 [source,bash]
 ----
 ./install_gpg_component.sh \
-  --component pinentry \
-  --version latest
+  --component-name pinentry \
+  --component-version latest
 ----
 
-Furthermore, script is capable of fetching source from Git repository (instead
-of downloading tarballs with stable releases).  In such case, a `--git` option
-should be supplied, and `--version` should specify the desired Git ref. For
-example, following will build the current master of Pinentry component:
-
+.Example: building Pinentry version 1.1.0.
 [source,bash]
 ----
 ./install_gpg_component.sh \
-  --component pinentry \
-  --version master \
-  --git
+  --component-name pinentry \
+  --component-version 1.1.0
 ----
 
-Run script with `--help` option in order to display a more detailed
-documentation:
+When building from Git repository, two options are mandatory:
 
+* `--component-name`, which specifies a component name
+* `--component-git-ref`, which specifies a Git branch or tag (commonly `master`)
+
+.Example: building Pinentry from Git as of current master.
+[source,bash]
+----
+./install_gpg_component.sh \
+  --component-name pinentry \
+  --component-git-ref master
+----
+
+Run script with `--help` option in order to list all available options:
+
+.Example: printing script help.
 [source,bash]
 ----
 ./install_gpg_component.sh --help
@@ -63,8 +70,8 @@ documentation:
 
 === `install_gpg_all.sh`
 
-Builds and installs all components of GPG.  The first parameter describes
-the desired version of GPG.  Supported values are: `2.1`, `2.2`, `latest`, and
+Builds and installs all components of GnuPG.  The first parameter describes
+the desired version of GnuPG.  Supported values are: `2.1`, `2.2`, `latest`, and
 `master`.  Other components are installed in best-matching versions, which is
 defined as follows:
 
@@ -77,14 +84,13 @@ Prefer `latest` over `2.2`.
 
 Any other parameters supplied will be passed to `install_gpg_component.sh`.
 
-For example, following snippet will install the freshest GPG, and its components
-without documentation:
+For example, following snippet will install the freshest GnuPG, and its
+components without documentation:
 
 [source,bash]
 ----
 ./install_gpg_all.sh \
   latest \
-  --build-dir ~/build-gpg \
   --configure-opts "--disable-doc"
 ----
 
@@ -96,9 +102,8 @@ example:
 [source,bash]
 ----
 ./install_gpg_component.sh \
-  --component pinentry \
-  --version latest \
-  --build-dir ~/build-gpg \
+  --component-name pinentry \
+  --component-version latest \
   --configure-opts "--enable-pinentry-qt --enable-pinentry-curses"
 ----
 
@@ -110,7 +115,6 @@ The `./configure` script assumes that all the dependencies are installed in
 ----
 ./install_gpg_all.sh \
   latest \
-  --build-dir ~/build-gpg \
   --configure-opts "\
     --prefix=/opt/gpg \
     --with-libgpg-error-prefix=/opt/gpg \
