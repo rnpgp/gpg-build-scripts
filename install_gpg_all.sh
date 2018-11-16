@@ -90,6 +90,17 @@ parse_cli_arguments()
 #      BUILDING      #
 ######################
 
+set_compiler_and_linker_flags()
+{
+	case "${_arg_suite}" in
+		"2.1")
+			# Newer versions of g++ tend to complain about how GnuPG 2.1 uses C++ unions.
+			# In order to prevent build failures, following has to be set.
+			export CXXFLAGS="${CXXFLAGS} -std=c++11"
+			;;
+	esac
+}
+
 install_suite()
 {
 	case "${_arg_suite}" in
@@ -157,6 +168,7 @@ set -e # Early exit if any command returns non-zero status code
 
 set_default_options
 parse_cli_arguments "$@"
+set_compiler_and_linker_flags
 install_suite
 
 exit 0
