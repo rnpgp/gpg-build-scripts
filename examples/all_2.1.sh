@@ -20,10 +20,13 @@ set -v # Print executed lines
 ###############
 
 # Assert path to executable…
-[[ $(which gpg) == "/usr/local/bin/gpg" ]]
+# (By default, GnuPG 2.1 executable is named "gpg2".  This is changed in 2.2.
+# Pass "--enable-gpg2-is-gpg" to configure script if you want executable to
+# be named "gpg").
+[[ $(which gpg2) == "/usr/local/bin/gpg2" ]]
 
 # Assert that executable actually works…
-gpg --version
+gpg2 --version
 
 # Assert executable version…
-gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.1\.[0-9]+"
+gpg2 --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.1\.[0-9]+"
