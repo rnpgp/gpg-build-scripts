@@ -219,7 +219,7 @@ fetch_from_git()
 	local _git_url="git://git.gnupg.org/${_arg_component}"
 	set_component_build_dir "${_arg_component}-git-${_arg_version}"
 
-	if [ ! -d "${_component_build_dir}" ]; then
+	if [[ ! -d "${_component_build_dir}" ]]; then
 		git clone ${_git_url} "${_component_build_dir}"
 		pushd "${_component_build_dir}"
 		git checkout ${_arg_version}
@@ -239,7 +239,7 @@ build_and_install()
 	[[ "${_arg_sudo}" = "on" ]] && _sudo=sudo
 
 	pushd "${_component_build_dir}"
-	if [ ! -f configure ]; then
+	if [[ ! -f configure ]]; then
 		fold_start "component.${_arg_component}.autogen"
 		./autogen.sh
 		fold_end "component.${_arg_component}.autogen"
@@ -328,7 +328,7 @@ if [[ "${_arg_version}" =~ ^latest ]]; then
 	determine_latest_version
 fi
 
-if [ "x${_arg_build_dir}" == "x" ]; then
+if [[ "x${_arg_build_dir}" == "x" ]]; then
 	create_temporary_build_dir
 else
 	mkdir -p ${_arg_build_dir}
