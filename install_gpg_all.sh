@@ -105,13 +105,13 @@ install_suite()
 {
 	case "${_arg_suite}" in
 		"2.2")
-			./install_gpg_component.sh --component-name libgpg-error --component-version 1.31 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libgcrypt --component-version 1.8.2 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libgpg-error --component-version 1.32 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name libgcrypt --component-version 1.8.3 "${_arr_component_options[@]}"
 			./install_gpg_component.sh --component-name libassuan --component-version 2.5.1 "${_arr_component_options[@]}"
 			./install_gpg_component.sh --component-name libksba --component-version 1.3.5 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name npth --component-version 1.5 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name npth --component-version 1.6 "${_arr_component_options[@]}"
 			./install_gpg_component.sh --component-name pinentry --component-version 1.1.0 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name gnupg --component-version 2.2.7 "${_arr_component_options[@]}"
+			./install_gpg_component.sh --component-name gnupg --component-version 2.2.10 "${_arr_component_options[@]}"
 			;;
 		"2.1")
 			./install_gpg_component.sh --component-name libgpg-error --component-version 1.27 "${_arr_component_options[@]}"
