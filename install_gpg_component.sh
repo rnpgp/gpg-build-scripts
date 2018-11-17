@@ -28,7 +28,7 @@ EXAMPLES
 	install_gpg_component.rb --component-name libgpg-error --component-git-ref master
 
 	# Passing options to ./configure script
-	install_gpg_component.rb --component-name libgpg-error --component-version latest --configure-opts "--disable-doc --exec-prefix=/my/bin"
+	install_gpg_component.rb --component-name libgpg-error --component-version latest --configure-opts "--disable-doc"
 
 OPTIONS
 
