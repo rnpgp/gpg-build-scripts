@@ -150,6 +150,13 @@ parse_cli_arguments()
 #      BUILDING      #
 ######################
 
+set_important_configure_options()
+{
+	if [[ ${_arg_git} == "on" ]]; then
+		_arg_configure_opts="--enable-maintainer-mode ${_arg_configure_opts}"
+	fi
+}
+
 display_config()
 {
 	cat <<CONFIG
@@ -315,6 +322,7 @@ set -e # Early exit if any command returns non-zero status code
 
 set_default_options
 parse_cli_arguments "$@"
+set_important_configure_options
 
 fold_start "component.${_arg_component}"
 
