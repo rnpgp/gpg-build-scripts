@@ -10,11 +10,26 @@ set -v # Print executed lines
 #    SETUP    #
 ###############
 
+# When building from Git, some other packages are required to be installed.
+sudo apt-get update
+sudo apt-get install -y texinfo
+
 # The --sudo option is typically needed when installing to standard locations.
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
 # root (not recommended), and won't trigger post-install steps (including
 # ldconfig).
-./install_gpg_all.sh --suite-version master --sudo
+#
+# --disable-doc option for ./configure script isn't required, but may save
+# you much headache.  Building documentation involves plenty of additional
+# packages, which may require manual tweaks (e.g. non-standard ImageMagick's
+# policies for building PDFs).
+#
+# --disable-pinentry-qt for ./configure script prevents from building of
+# Qt Pinentry.  Although dependecies seem to be present in Travis CI enviromnent
+# by default, build fails for some reason.  Fixing it for unstable Pinentry
+# version is out of the scope of this example.
+./install_gpg_all.sh --suite-version master --sudo \
+	--configure-opts "--disable-doc --disable-pinentry-qt"
 
 ###############
 #    TESTS    #
@@ -27,4 +42,4 @@ set -v # Print executed lines
 gpg --version
 
 # Assert executable version…
-gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.2\.[0-9]+"
+gpg --version | grep "THIS IS A DEVELOPMENT VERSION"
