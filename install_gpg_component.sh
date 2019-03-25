@@ -67,6 +67,14 @@ OPTIONS
 		'--prefix' configure options changes. Consider 'LD_LIBRARY_PATH' in
 		these cases. By default it is off.
 
+	--[no-]verify
+		Whether to verify signatures of tarballs with GnuPG distribution or not.
+		By default it is off.
+
+		This option requires that gpg is already in $PATH at build time.
+
+		This option is incompatible with --component-git-ref.
+
 	Output options:
 
 	--folding-style STYLE
@@ -93,6 +101,7 @@ set_default_options()
 	_arg_build_dir=
 	_arg_configure_opts=
 	_arg_sudo="off"
+	_arg_verify="off"
 	_arg_git="off"
 	_arg_color="off"
 	_arg_folding_style="none"
@@ -138,6 +147,14 @@ parse_cli_arguments()
 				_arg_sudo="off"
 				shift
 				;;
+			--verify)
+				_arg_verify="on"
+				shift
+				;;
+			--no-verify)
+				_arg_verify="off"
+				shift
+				;;
 			--folding-style)
 				_arg_folding_style="$2"
 				shift
@@ -165,6 +182,16 @@ set_important_configure_options()
 	fi
 }
 
+ensure_options_compatibility()
+{
+	if [[ ${_arg_git} == "on" ]] && [[ ${_arg_verify} = "on" ]]; then
+		echo <<ECHO
+ERROR --verify option cannot be used together with --component-git-ref.
+ECHO
+		exit 600
+	fi
+}
+
 display_config()
 {
 	cat <<CONFIG
@@ -172,6 +199,7 @@ component: "${_arg_component}"
 version: "${_arg_version}"
 git: "${_arg_git}"
 sudo: "${_arg_sudo}"
+verify: "${_arg_verify}"
 build_dir: "${_arg_build_dir:-<temporary directory>}"
 configure_options: "${_arg_configure_opts}"
 
@@ -223,7 +251,12 @@ fetch_release()
 {
 	local _tarball_file_name="${_arg_component}-${_arg_version}.tar.bz2"
 	local _tarball_url="https://gnupg.org/ftp/gcrypt/${_arg_component}/${_tarball_file_name}"
+	local _signature_url="${_tarball_url}.sig"
 	curl ${_tarball_url} --remote-name --retry 5
+	if [[ "${_arg_verify}" = "on" ]]; then
+		curl ${_signature_url} --remote-name --retry 5
+		verify_tarball_signature ${_tarball_file_name}
+	fi
 	tar -xjf ${_tarball_file_name}
 	rm ${_tarball_file_name}
 	set_component_build_dir "${_arg_component}-${_arg_version}"
@@ -246,6 +279,13 @@ fetch_from_git()
 		git pull # in case of outdated local branch
 		popd
 	fi
+}
+
+verify_tarball_signature()
+{
+	local _tarball_file_name=$1
+	local _signature_file_name="${_tarball_file_name}.sig"
+	gpg --verify "${_signature_file_name}" "${_tarball_file_name}"
 }
 
 build_and_install()
@@ -330,6 +370,7 @@ set -e # Early exit if any command returns non-zero status code
 
 set_default_options
 parse_cli_arguments "$@"
+ensure_options_compatibility
 set_important_configure_options
 
 fold_start "component.${_arg_component}"

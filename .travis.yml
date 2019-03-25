@@ -22,4 +22,4 @@ env:
     - SCRIPT="gpgme"
     - SCRIPT="install_prefix"
     - SCRIPT="no_sudo"
-    
+    - SCRIPT="verify"
