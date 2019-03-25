@@ -32,6 +32,8 @@ EXAMPLES
 
 OPTIONS
 
+	Basic options:
+
 	--component-name COMPONENT
 		Component to install.  This option is mandatory.
 
@@ -48,6 +50,16 @@ OPTIONS
 
 		Either --component-version or --component-git-ref is mandatory.
 
+	Build options:
+
+	--build-dir DIR
+		Directory in which the compilation will happen.  Content may be
+		overwritten during build.  Directory will be created if non-existent.
+		If not set, a temporary directory will be created.
+
+	--configure-opts OPTS
+		Options to be passed to "./configure" script.
+
 	--[no-]sudo
 		Whether to do 'sudo make install', or just 'make install', and whether
 		to update ldconfig configuration. Note that the ldconfig update is
@@ -55,13 +67,7 @@ OPTIONS
 		'--prefix' configure options changes. Consider 'LD_LIBRARY_PATH' in
 		these cases. By default it is off.
 
-	--configure-opts OPTS
-		Options to be passed to "./configure" script.
-
-	--build-dir DIR
-		Directory in which the compilation will happen.  Content may be
-		overwritten during build.  Directory will be created if non-existent.
-		If not set, a temporary directory will be created.
+	Output options:
 
 	--folding-style STYLE
 		If set, enables output folding.  STYLE defines the folding notation
@@ -73,6 +79,8 @@ OPTIONS
 		"travis"
 			Fold output for Travis CI builds.  See this example Travis job:
 			https://api.travis-ci.org/v3/job/15440998/log.txt
+
+	Help:
 
 	--help, -h
 		Displays this message
@@ -106,6 +114,12 @@ parse_cli_arguments()
 				shift
 				shift
 				;;
+			--component-git-ref)
+				_arg_version="$2"
+				_arg_git="on"
+				shift
+				shift
+				;;
 			--build-dir)
 				_arg_build_dir="$2"
 				shift
@@ -122,12 +136,6 @@ parse_cli_arguments()
 				;;
 			--no-sudo)
 				_arg_sudo="off"
-				shift
-				;;
-			--component-git-ref)
-				_arg_version="$2"
-				_arg_git="on"
-				shift
 				shift
 				;;
 			--folding-style)
