@@ -6,6 +6,9 @@ before_script:
   # Disable sudo for travis user in no_sudo build
   - if [[ "${SCRIPT}" = "no_sudo" ]]; then sudo rm /etc/sudoers.d/travis; fi
 
+  # Import GnuPG keys for "verify.sh" example.
+  - gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 249B39D24F25E3B6 2071B08A33BD3F06 04376F3EE0856959 BCEF7E294B092E28
+
 script:
   - examples/${SCRIPT}.sh
 
