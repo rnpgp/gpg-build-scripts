@@ -175,6 +175,26 @@ before_install:
 Please note the `--folding-style travis` option.  It makes the job logs more
 readable, as it divides the output of build steps into foldable sections.
 
+=== Installing GnuPG Made Easy (GPGME)
+
+GPGME is not installed by `install_gpg_all.sh` script, however it can be
+installed with `install_gpg_component.sh` like every other component.
+
+For example:
+
+[source,bash]
+----
+./install_gpg_all.sh \
+  --suite-version latest
+
+./install_gpg_component.sh \
+  --component-name gpgme \
+  --component-version latest
+----
+
+NOTE: GPGME requires `libgpg-error` and `libassuan` to compile.  Also, other
+components of GnuPG suite are typically needed in order to actually use GPGME.
+
 == License
 
 The MIT License (MIT)
