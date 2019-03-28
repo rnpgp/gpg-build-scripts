@@ -35,6 +35,11 @@ mkdir -p ${GPG_PREFIX}
 #    TESTS    #
 ###############
 
+# Assert that sudo is not available in current environment
+# (You may need to comment it out when running on your local machine)…
+sudo --non-interactive true || SUDO_UNAVAILABLE=1
+[[ ${SUDO_UNAVAILABLE} -eq 1 ]]
+
 # Assert path to executable…
 [[ $(which gpg) == "${GPG_PREFIX}/bin/gpg" ]]
 
