@@ -163,7 +163,12 @@ env:
     - GPG_VERSION="2.1"
 
 before_install:
-  - ./install_gpg_all.sh --suite-version "$GPG_VERSION" --build-dir "$GPG_BUILD_DIR" --configure-opts "$GPG_CONFIGURE_OPTS" --folding-style travis
+  - >
+    ./install_gpg_all.sh
+    --suite-version "$GPG_VERSION"
+    --build-dir "$GPG_BUILD_DIR"
+    --configure-opts "$GPG_CONFIGURE_OPTS"
+    --folding-style travis
   - gem install bundler -v 1.16.1
 ----
 
