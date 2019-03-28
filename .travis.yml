@@ -1,4 +1,12 @@
 language: bash
+
+os:
+  # Travis runs up to five jobs in parallel, but it appears that only up to
+  # three of them can be OS X instances.  Hence, listing OS X at the first place
+  # results with shorter build times.
+  - osx
+  - linux
+
 dist: xenial
 
 before_script:
