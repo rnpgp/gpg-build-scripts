@@ -70,10 +70,10 @@ Run script with `--help` option in order to list all available options:
 
 === `install_gpg_all.sh`
 
-Builds and installs all components of GnuPG.  The first parameter describes
-the desired version of GnuPG.  Supported values are: `2.1`, `2.2`, `latest`, and
-`master`.  Other components are installed in best-matching versions, which is
-defined as follows:
+Builds and installs all components of GnuPG.  The `--suite-version` parameter
+describes the desired version of GnuPG.  Supported values are: `2.1`, `2.2`,
+`latest`, and `master`.  Other components are installed in best-matching
+versions, which is defined as follows:
 
 * For `2.1`, as in this Gist: https://gist.github.com/mattrude/3883a3801613b048d45b
 * For `2.2`, as in this Gist: https://gist.github.com/vt0r/a2f8c0bcb1400131ff51
@@ -90,7 +90,7 @@ components without documentation:
 [source,bash]
 ----
 ./install_gpg_all.sh \
-  latest \
+  --suite-version latest \
   --configure-opts "--disable-doc"
 ----
 
@@ -114,7 +114,7 @@ The `./configure` script assumes that all the dependencies are installed in
 [source,bash]
 ----
 ./install_gpg_all.sh \
-  latest \
+  --suite-version latest \
   --configure-opts "\
     --prefix=/opt/gpg \
     --with-libgpg-error-prefix=/opt/gpg \
@@ -154,7 +154,7 @@ env:
     - GPG_VERSION="2.1"
 
 before_install:
-  - ./install_gpg_all.sh "$GPG_VERSION" --build-dir "$GPG_BUILD_DIR" --configure-opts "$GPG_CONFIGURE_OPTS" --folding-style travis
+  - ./install_gpg_all.sh --suite-version "$GPG_VERSION" --build-dir "$GPG_BUILD_DIR" --configure-opts "$GPG_CONFIGURE_OPTS" --folding-style travis
   - gem install bundler -v 1.16.1
 ----
 
