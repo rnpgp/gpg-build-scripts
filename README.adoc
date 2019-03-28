@@ -11,7 +11,7 @@ GNU build tools are required.  For Ubuntu, following packages should be enough:
 https://gist.github.com/mattrude/3883a3801613b048d45b#gistcomment-2378027).
 
 When building from Git, additional software is needed, in particular Git,
-Automake, and more recent version of Gettext.  Note that Gettext available in
+Automake, and a recent version of Gettext.  Note that Gettext available in
 Ubuntu Trusty is too old for this purpose--this fact must be taken into account
 when building from Git in Travis CI environment.
 
