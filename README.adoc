@@ -11,7 +11,7 @@ GNU build tools are required.  For Ubuntu, following packages should be enough:
 https://gist.github.com/mattrude/3883a3801613b048d45b#gistcomment-2378027).
 
 When building from Git, additional software is needed, in particular Git,
-Automake, and more recent version of Gettext.  Note that Gettext available in
+Automake, and a recent version of Gettext.  Note that Gettext available in
 Ubuntu Trusty is too old for this purpose--this fact must be taken into account
 when building from Git in Travis CI environment.
 
@@ -60,7 +60,7 @@ When building from Git repository, two options are mandatory:
   --component-git-ref master
 ----
 
-Run script with `--help` option in order to list all available options:
+For a complete list available options, run the script with `--help` option:
 
 .Example: printing script help.
 [source,bash]
@@ -70,31 +70,40 @@ Run script with `--help` option in order to list all available options:
 
 === `install_gpg_all.sh`
 
-Builds and installs all components of GnuPG.  The first parameter describes
-the desired version of GnuPG.  Supported values are: `2.1`, `2.2`, `latest`, and
-`master`.  Other components are installed in best-matching versions, which is
-defined as follows:
+Builds and installs all components of GnuPG (but not GPGME, which must be
+installed separately via `install_gpg_component.sh` if desired).
 
-* For `2.1`, as in this Gist: https://gist.github.com/mattrude/3883a3801613b048d45b
-* For `2.2`, as in this Gist: https://gist.github.com/vt0r/a2f8c0bcb1400131ff51
-* For `latest`, most recent ones
-* For `master`, whatever is currently on `master` branch in Git.
+The `--suite-version` parameter describes the combination of component versions.
+Supported values are: `2.1`, `2.2`, `latest`, and `master`, which are defined as
+follows:
 
-Prefer `latest` over `2.2`.
+* `2.1` means GnuPG 2.1, and other component as in this Gist:
+  https://gist.github.com/mattrude/3883a3801613b048d45b
+* `2.2` means GnuPG 2.1, and other component as in this Gist:
+  https://gist.github.com/vt0r/a2f8c0bcb1400131ff51
+* `latest` means the latest version of GnuPG and all its components.  They are
+  obtained from https://versions.gnupg.org/swdb.lst, which is maintained by
+  GnuPG developers, and which is used by GnuPG's stock software updater.
+* `master` means whatever is currently on `master` branch in Git.
 
-Any other parameters supplied will be passed to `install_gpg_component.sh`.
+TIP: Prefer `latest` over `2.2`.
 
-For example, following snippet will install the freshest GnuPG, and its
-components without documentation:
+Any other arguments are passed to `install_gpg_component.sh`, which is invoked
+from `install_gpg_all.sh` for every component once.  For example, following
+snippet will install the freshest GnuPG without documentation
+(`--configure-opts "--disable-doc"` will be passed to component install
+scripts):
 
 [source,bash]
 ----
 ./install_gpg_all.sh \
-  latest \
+  --suite-version latest \
   --configure-opts "--disable-doc"
 ----
 
-== Passing options to `./configure` script
+== Tips & tricks
+
+=== Passing options to `./configure` script
 
 The `--configure-opts` allows to pass options to `./configure` scripts.  For
 example:
@@ -114,7 +123,7 @@ The `./configure` script assumes that all the dependencies are installed in
 [source,bash]
 ----
 ./install_gpg_all.sh \
-  latest \
+  --suite-version latest \
   --configure-opts "\
     --prefix=/opt/gpg \
     --with-libgpg-error-prefix=/opt/gpg \
@@ -129,7 +138,7 @@ The `./configure` script assumes that all the dependencies are installed in
 You may see a bunch of warnings as some of these options are relevant only to
 few components, but that won't break your build.
 
-== Using with Travis CI
+=== Using with Travis CI
 
 This scripts have been designed to work in Travis CI.  Use following listing
 as example of `.travis.yml`:
@@ -154,7 +163,12 @@ env:
     - GPG_VERSION="2.1"
 
 before_install:
-  - ./install_gpg_all.sh "$GPG_VERSION" --build-dir "$GPG_BUILD_DIR" --configure-opts "$GPG_CONFIGURE_OPTS" --folding-style travis
+  - >
+    ./install_gpg_all.sh
+    --suite-version "$GPG_VERSION"
+    --build-dir "$GPG_BUILD_DIR"
+    --configure-opts "$GPG_CONFIGURE_OPTS"
+    --folding-style travis
   - gem install bundler -v 1.16.1
 ----
 
