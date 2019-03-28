@@ -94,7 +94,9 @@ components without documentation:
   --configure-opts "--disable-doc"
 ----
 
-== Passing options to `./configure` script
+== Tips & tricks
+
+=== Passing options to `./configure` script
 
 The `--configure-opts` allows to pass options to `./configure` scripts.  For
 example:
@@ -129,7 +131,7 @@ The `./configure` script assumes that all the dependencies are installed in
 You may see a bunch of warnings as some of these options are relevant only to
 few components, but that won't break your build.
 
-== Using with Travis CI
+=== Using with Travis CI
 
 This scripts have been designed to work in Travis CI.  Use following listing
 as example of `.travis.yml`:
