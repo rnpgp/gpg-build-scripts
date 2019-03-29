@@ -1,32 +1,25 @@
 dist: xenial
-sudo: false
 
 install:
+
+before_script:
+  # Disable sudo for travis user in no_sudo build
+  - if [[ "${SCRIPT}" = "no_sudo" ]]; then sudo rm /etc/sudoers.d/travis; fi
 
 script:
   - examples/${SCRIPT}.sh
 
-matrix:
-  include:
-    - env: SCRIPT="all_latest"
-      sudo: required
-    - env: SCRIPT="all_head"
-      sudo: required
-    - env: SCRIPT="all_2.2"
-      sudo: required
-    - env: SCRIPT="all_2.1"
-      sudo: required
-    - env: SCRIPT="build_dir"
-      sudo: required
-    - env: SCRIPT="configure_options"
-      sudo: required
-    - env: SCRIPT="install_prefix"
-      sudo: required
-    - env: SCRIPT="no_sudo"
-      sudo: false
-    - env: SCRIPT="components_individually"
-      sudo: required
-    - env: SCRIPT="folding_travis"
-      sudo: required
-    - env: SCRIPT="gpgme"
-      sudo: required
+env:
+  matrix:
+    - SCRIPT="all_latest"
+    - SCRIPT="all_head"
+    - SCRIPT="all_2.1"
+    - SCRIPT="all_2.2"
+    - SCRIPT="build_dir"
+    - SCRIPT="components_individually"
+    - SCRIPT="configure_options"
+    - SCRIPT="folding_travis"
+    - SCRIPT="gpgme"
+    - SCRIPT="install_prefix"
+    - SCRIPT="no_sudo"
+    
