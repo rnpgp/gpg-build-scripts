@@ -13,12 +13,13 @@ env:
   matrix:
     - SCRIPT="all_latest"
     - SCRIPT="all_head"
-    - SCRIPT="all_2.2"
     - SCRIPT="all_2.1"
+    - SCRIPT="all_2.2"
     - SCRIPT="build_dir"
-    - SCRIPT="configure_options"
-    - SCRIPT="install_prefix"
-    - SCRIPT="no_sudo"
     - SCRIPT="components_individually"
+    - SCRIPT="configure_options"
     - SCRIPT="folding_travis"
     - SCRIPT="gpgme"
+    - SCRIPT="install_prefix"
+    - SCRIPT="no_sudo"
+    
