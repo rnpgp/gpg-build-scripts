@@ -9,16 +9,16 @@ before_script:
 script:
   - examples/${SCRIPT}.sh
 
-matrix:
-  include:
-    - env: SCRIPT="all_latest"
-    - env: SCRIPT="all_head"
-    - env: SCRIPT="all_2.2"
-    - env: SCRIPT="all_2.1"
-    - env: SCRIPT="build_dir"
-    - env: SCRIPT="configure_options"
-    - env: SCRIPT="install_prefix"
-    - env: SCRIPT="no_sudo"
-    - env: SCRIPT="components_individually"
-    - env: SCRIPT="folding_travis"
-    - env: SCRIPT="gpgme"
+env:
+  matrix:
+    - SCRIPT="all_latest"
+    - SCRIPT="all_head"
+    - SCRIPT="all_2.2"
+    - SCRIPT="all_2.1"
+    - SCRIPT="build_dir"
+    - SCRIPT="configure_options"
+    - SCRIPT="install_prefix"
+    - SCRIPT="no_sudo"
+    - SCRIPT="components_individually"
+    - SCRIPT="folding_travis"
+    - SCRIPT="gpgme"
