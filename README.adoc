@@ -138,6 +138,54 @@ The `./configure` script assumes that all the dependencies are installed in
 You may see a bunch of warnings as some of these options are relevant only to
 few components, but that won't break your build.
 
+=== Verifying authenticity of tarballs
+
+GnuPG team provides PGP signatures of released tarballs, which can be used
+to verify authenticity of these tarballs.  Note that using this feature requires
+that another installation of GnuPG is available in advance.
+
+In order to do so, firstly public keys of GnuPG team must be imported.
+The easiest way is to fetch them from some keyserver, for example from
+keyserver.ubuntu.com:
+
+[source,bash]
+----
+gpg \
+  --keyserver hkp://keyserver.ubuntu.com:80 \
+  --recv-keys AAAAAAAAAAAAAAAA BBBBBBBBBBBBBBBBBBBB CCCCCCCCCCCCCCCCCC
+----
+
+You should obtain key IDs from https://www.gnupg.org/signature_key.html[GnuPG
+home page] rather than trust me, therefore above snippet contains only
+placeholders.  Key ID is the last sixteen hexadecimal digits of its fingerprint.
+
+Alternatively, you may write a whole ASCII-armored public key block, which is
+printed near the bottom of the aforementioned page, into some file, and then
+import it.  Given that you have saved key block to a file `GPG_KEYS.gpg`,
+following imports it:
+
+[source,bash]
+----
+gpg --import GPG_KEYS.gpg
+----
+
+Keys are now imported but not trusted yet.  It is enough for signature
+verification, though warnings will be printed.  In order to enable verfication,
+use `--verify` option, for example:
+
+[source,bash]
+----
+./install_gpg_all.sh \
+  --suite-version latest \
+  --verify
+----
+
+TIP: If you want to learn how to exchange and trust keys, head to
+https://www.gnupg.org/gph/en/manual/x56.html[GNU Privacy Handbook].
+
+TIP: For more information about checking integrity of GnuPG release tarballs,
+head to https://www.gnupg.org/download/integrity_check.html[GnuPG home page].
+
 === Using with Travis CI
 
 This scripts have been designed to work in Travis CI.  Use following listing
