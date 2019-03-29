@@ -259,7 +259,7 @@ determine_latest_version()
 
 create_temporary_build_dir()
 {
-	readonly _temporary_build_dir="$(mktemp -d --tmpdir "gpg-build.XXXXXXXX")"
+	readonly _temporary_build_dir="$(mktemp -d -t "gpg-build.XXXXXXXX")"
 	trap remove_temporary_build_dir EXIT
 	echo "Building in temporary directory '${_temporary_build_dir}'."
 	_arg_build_dir=${_temporary_build_dir}
