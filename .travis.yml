@@ -28,3 +28,5 @@ matrix:
       sudo: required
     - env: SCRIPT="folding_travis"
       sudo: required
+    - env: SCRIPT="gpgme"
+      sudo: required
