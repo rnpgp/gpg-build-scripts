@@ -2,6 +2,10 @@ dist: xenial
 
 install:
 
+before_script:
+  # Disable sudo for travis user in no_sudo build
+  - if [[ "${SCRIPT}" = "no_sudo" ]]; then sudo rm /etc/sudoers.d/travis; fi
+
 script:
   - examples/${SCRIPT}.sh
 
