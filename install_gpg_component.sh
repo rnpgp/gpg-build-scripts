@@ -322,11 +322,19 @@ set_component_build_dir()
 
 header()
 {
-	echo ""
-	echo ""
-	echo "=== $1 ==="
-	echo ""
-	echo ""
+	case "${_arg_folding_style}" in
+		travis)
+			echo "=== $1 ==="
+			echo ""
+			;;
+		*)
+			echo ""
+			echo ""
+			echo "=== $1 ==="
+			echo ""
+			echo ""
+			;;
+	esac
 }
 
 fold_start()
