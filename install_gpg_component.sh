@@ -316,6 +316,10 @@ set_component_build_dir()
 	_component_build_dir=$1
 }
 
+######################
+#    PRETTY OUTPUT   #
+######################
+
 header()
 {
 	echo ""
@@ -324,10 +328,6 @@ header()
 	echo ""
 	echo ""
 }
-
-######################
-#    PRETTY OUTPUT   #
-######################
 
 fold_start()
 {
