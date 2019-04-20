@@ -321,9 +321,10 @@ post_install()
 post_install_ldconfig()
 {
 	local _ld_so_conf_file="/etc/ld.so.conf.d/gpg-from_build_scripts.conf"
+	local _libpath=`detect_libpath`
 
 	fold_start "component.${_arg_component}.post-install.ldconfig"
-	sudo tee "${_ld_so_conf_file}"<<<"/usr/local/lib"
+	sudo tee "${_ld_so_conf_file}"<<<"${_libpath}"
 	sudo ldconfig -v
 	fold_end "component.${_arg_component}.post-install.ldconfig"
 }
@@ -331,6 +332,26 @@ post_install_ldconfig()
 set_component_build_dir()
 {
 	_component_build_dir=$1
+}
+
+# Returns actual libpath determined by ./configure script, typically
+# "/usr/local/lib".  Requires that Makefile for given component already exists.
+#
+# See: https://stackoverflow.com/a/55770976/304175
+#
+# Note that pushd/popd output must be suprressed, otherwise it will be captured
+# in calling function and treated as part of this function's return value.
+detect_libpath()
+{
+	pushd "${_component_build_dir}" > /dev/null
+	echo `make -f - display-libdir<<'HERE_MAKEFILE'
+include Makefile
+
+display-%:
+	@echo "$($*)"
+HERE_MAKEFILE
+`
+	popd > /dev/null #$_component_build_dir
 }
 
 ######################
@@ -419,7 +440,7 @@ fi
 pushd ${_arg_build_dir}
 fetch_source
 build_and_install
-popd # _arg_build_dir
 post_install
+popd # _arg_build_dir
 
 fold_end "component.${_arg_component}"
