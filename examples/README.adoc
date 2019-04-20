@@ -21,12 +21,12 @@ correctness.  Every example includes comments.
 `build_dir.sh`::
 	Shows how to perform the build in a custom directory.  Potentially useful
 	when one wants to cache the source code, or inspect the failed build.
+`components_individually.sh`::
+	Shows how to install individual GnuPG components, one by one.  Allows for
+	fine-grained configuration.
 `configure_options.sh`::
 	Shows how to pass various options to the configure script.
 `install_prefix.sh`::
 	Shows how to install GnuPG into an arbitrary location.
 `no_sudo.sh`::
 	Shows how to install GnuPG without root privileges.
-`components_individually.sh`::
-	Shows how to install individual GnuPG components, one by one.  Allows for
-	fine-grained configuration.
