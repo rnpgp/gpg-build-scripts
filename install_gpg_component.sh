@@ -311,6 +311,21 @@ build_and_install()
 	popd
 }
 
+post_install()
+{
+	if [[ "${_arg_component}" =~ ^gnupg ]] && [[ "${_arg_sudo}" = "on" ]]; then
+		post_install_ldconfig
+	fi
+}
+
+post_install_ldconfig()
+{
+	fold_start "component.${_arg_component}.post-install.ldconfig"
+	sudo tee -a /etc/ld.so.conf.d/gpg2.conf <<<"/usr/local/lib"
+	sudo ldconfig -v
+	fold_end "component.${_arg_component}.post-install.ldconfig"
+}
+
 set_component_build_dir()
 {
 	_component_build_dir=$1
@@ -403,12 +418,6 @@ pushd ${_arg_build_dir}
 fetch_source
 build_and_install
 popd # _arg_build_dir
-
-if [[ "${_arg_component}" =~ ^gnupg ]] && [[ "${_arg_sudo}" = "on" ]]; then
-	fold_start "component.${_arg_component}.post-install"
-	sudo tee -a /etc/ld.so.conf.d/gpg2.conf <<<"/usr/local/lib"
-	sudo ldconfig -v
-	fold_end "component.${_arg_component}.post-install"
-fi
+post_install
 
 fold_end "component.${_arg_component}"
