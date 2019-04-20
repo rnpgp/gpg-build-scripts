@@ -60,6 +60,30 @@ OPTIONS
 	--configure-opts OPTS
 		Options to be passed to "./configure" script.
 
+	--[no-]ldconfig
+		Whether to run 'ldconfig' after component is installed.
+
+		You probably want to turn it on when installing GnuPG on GNU+Linux
+		system.  It ensures that a correct library path is written to
+		"/etc/ld.so.conf.d/gpg-from_build_scripts.conf", and then runs
+		"ldconfig".  Library path is obtained from Makefile which has been
+		produced by "configure" script, therefore any options passed to
+		configure script via --configure-opts will be honoured (e.g. --prefix).
+
+		You may want to keep it off if you prefer to rely on LD_LIBRARY_PATH
+		environment variable instead, or if you need to customize 'ldconfig'
+		setup any further.
+
+		You definitely want not to enable it on systems which do not use
+		'ldconfig', e.g. MacOS.
+
+		This option requires that current user can execute 'ldconfig', and that
+		configuration file "/etc/ld.so.conf.d/gpg-from_build_scripts.conf" is
+		writtable for current user.  Note that 'sudo' will be used if --sudo
+		option is enabled as well.
+
+		By default this option is off.
+
 	--[no-]sudo
 		Whether to do 'sudo make install', or just 'make install', and whether
 		to update ldconfig configuration. Note that the ldconfig update is
