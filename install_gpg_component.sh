@@ -100,6 +100,7 @@ set_default_options()
 {
 	_arg_build_dir=
 	_arg_configure_opts=
+	_arg_ldconfig="off"
 	_arg_sudo="off"
 	_arg_verify="off"
 	_arg_git="off"
@@ -137,6 +138,14 @@ parse_cli_arguments()
 			--configure-opts)
 				_arg_configure_opts="$2"
 				shift
+				shift
+				;;
+			--ldconfig)
+				_arg_ldconfig="on"
+				shift
+				;;
+			--no-ldconfig)
+				_arg_ldconfig="off"
 				shift
 				;;
 			--sudo)
@@ -198,6 +207,7 @@ display_config()
 component: "${_arg_component}"
 version: "${_arg_version}"
 git: "${_arg_git}"
+ld_config: "${_arg_ldconfig}"
 sudo: "${_arg_sudo}"
 verify: "${_arg_verify}"
 build_dir: "${_arg_build_dir:-<temporary directory>}"
@@ -313,7 +323,7 @@ build_and_install()
 
 post_install()
 {
-	if [[ "${_arg_sudo}" = "on" ]]; then
+	if [[ "${_arg_ldconfig}" = "on" ]]; then
 		post_install_ldconfig
 	fi
 }
