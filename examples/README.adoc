@@ -26,7 +26,14 @@ correctness.  Every example includes comments.
 	fine-grained configuration.
 `configure_options.sh`::
 	Shows how to pass various options to the configure script.
+`folding_travis`::
+	Shows how to use `--folding-style` option in order to get folded output in
+	Travis CI.
+`gpgme`::
+	Shows how to install GnuPG Made Easy (GPGME) API.
 `install_prefix.sh`::
 	Shows how to install GnuPG into an arbitrary location.
 `no_sudo.sh`::
 	Shows how to install GnuPG without root privileges.
+`verify`::
+	Shows how to verify authenticity of GnuPG releases.
