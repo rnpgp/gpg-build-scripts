@@ -333,9 +333,12 @@ post_install_ldconfig()
 	local _ld_so_conf_file="/etc/ld.so.conf.d/gpg-from_build_scripts.conf"
 	local _libpath=`detect_libpath`
 
+	local _sudo=""
+	[[ "${_arg_sudo}" = "on" ]] && _sudo=sudo
+
 	fold_start "component.${_arg_component}.post-install.ldconfig"
-	sudo tee "${_ld_so_conf_file}"<<<"${_libpath}"
-	sudo ldconfig -v
+	${_sudo} tee "${_ld_so_conf_file}"<<<"${_libpath}"
+	${_sudo} ldconfig -v
 	fold_end "component.${_arg_component}.post-install.ldconfig"
 }
 
