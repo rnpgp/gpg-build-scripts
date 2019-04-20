@@ -320,8 +320,10 @@ post_install()
 
 post_install_ldconfig()
 {
+	local _ld_so_conf_file="/etc/ld.so.conf.d/gpg-from_build_scripts.conf"
+
 	fold_start "component.${_arg_component}.post-install.ldconfig"
-	sudo tee -a /etc/ld.so.conf.d/gpg2.conf <<<"/usr/local/lib"
+	sudo tee "${_ld_so_conf_file}"<<<"/usr/local/lib"
 	sudo ldconfig -v
 	fold_end "component.${_arg_component}.post-install.ldconfig"
 }
