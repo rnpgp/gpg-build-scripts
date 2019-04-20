@@ -313,7 +313,7 @@ build_and_install()
 
 post_install()
 {
-	if [[ "${_arg_component}" =~ ^gnupg ]] && [[ "${_arg_sudo}" = "on" ]]; then
+	if [[ "${_arg_sudo}" = "on" ]]; then
 		post_install_ldconfig
 	fi
 }
