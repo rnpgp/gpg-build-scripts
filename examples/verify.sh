@@ -12,15 +12,8 @@ set -v # Print executed lines
 ###############
 
 # Firstly, public keys which will be used for GnuPG distribution verification
-# must be imported.  For security reasons, you need to do it yourself.
-#
-# A public key block with current keys can be found on this page:
-# https://www.gnupg.org/signature_key.html
-#
-# Then, keys can be imported by executing something of:
-# $ gpg --import FILE_WITH_KEY_BLOCK
-#
-# For more about importing keys (and trusting them) in G
+# must be imported.  For security reasons, you need to do it yourself.  See
+# "Verifying authenticity of tarballs" in README for more information.
 
 # The --sudo option is typically needed when installing to standard locations.
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
