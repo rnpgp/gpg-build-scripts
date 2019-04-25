@@ -22,16 +22,37 @@ BUILD_DIR="${TRAVIS_BUILD_DIR}/b"
 # libgpg-error, and enable it (default) for other components.
 # In order to satisfy dependencies, components should be installed
 # in a specific order.
-./install_gpg_component.sh --component-name libgpg-error --component-version latest --sudo \
-  --configure-opts "--disable-doc"
-./install_gpg_component.sh --component-name libgcrypt --component-version latest --sudo \
-  --build-dir "${BUILD_DIR}"
-./install_gpg_component.sh --component-name libassuan --component-version latest --sudo
-./install_gpg_component.sh --component-name libksba --component-version latest --sudo
-./install_gpg_component.sh --component-name npth --component-version latest --sudo
-./install_gpg_component.sh --component-name pinentry --component-version 1.1.0 --sudo
-./install_gpg_component.sh --component-name gnupg --component-version 2.2.10  --sudo \
-  --configure-opts "--enable-gpg-sha256 --disable-gpg-sha512 --enable-doc"
+./install_gpg_component.sh \
+	--component-name libgpg-error \
+	--component-version latest \
+	--configure-opts "--disable-doc" \
+	--sudo
+./install_gpg_component.sh \
+	--component-name libgcrypt \
+	--component-version latest \
+	--build-dir "${BUILD_DIR}" \
+	--sudo
+./install_gpg_component.sh \
+	--component-name libassuan \
+	--component-version latest \
+	--sudo
+./install_gpg_component.sh \
+	--component-name libksba \
+	--component-version latest \
+	--sudo
+./install_gpg_component.sh \
+	--component-name npth \
+	--component-version latest \
+	--sudo
+./install_gpg_component.sh \
+	--component-name pinentry \
+	--component-version 1.1.0 \
+	--sudo
+./install_gpg_component.sh \
+	--component-name gnupg \
+	--component-version 2.2.10 \
+	--configure-opts "--enable-gpg-sha256 --disable-gpg-sha512 --enable-doc" \
+	--sudo
 
 ###############
 #    TESTS    #

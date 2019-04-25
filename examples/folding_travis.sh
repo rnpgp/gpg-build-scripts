@@ -14,7 +14,8 @@ set -v # Print executed lines
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
 # root (not recommended), and won't trigger post-install steps (including
 # ldconfig).
-./install_gpg_all.sh --suite-version latest --sudo --folding-style travis | tee ./output
+./install_gpg_all.sh --suite-version latest --sudo --folding-style travis | \
+	tee ./output
 
 ###############
 #    TESTS    #
