@@ -14,8 +14,9 @@ set -v # Print executed lines
 # --enable-gpg-sha256 and --disable-gpg-sha512 are relevant to GnuPG component,
 # whereas --disable-doc is relevant for all components.  This is okay, however
 # warnings will be printed.
-./install_gpg_all.sh --suite-version latest --sudo --configure-opts "--disable-doc \
-	--enable-pinentry-curses --enable-gpg-sha256 --disable-gpg-sha512"
+./install_gpg_all.sh --suite-version latest --sudo \
+	--configure-opts "--disable-doc --enable-pinentry-curses \
+	--enable-gpg-sha256 --disable-gpg-sha512"
 
 ###############
 #    TESTS    #
