@@ -11,9 +11,14 @@ set -v # Print executed lines
 
 # The --sudo option is typically needed when installing to standard locations.
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
-# root (not recommended), and won't trigger post-install steps (including
-# ldconfig).
-./install_gpg_all.sh --suite-version 2.2 --sudo
+# root (not recommended).
+#
+# The --ldconfig option is typically needed on GNU+Linux systems.  It causes
+# `ldconfig` to be run right after installing each component in order to
+# reconfigure dynamic linker run-time bindings, in other words to make the
+# installed shared libraries working correctly.  This option should not be
+# enabled on systems which do not feature `ldconfig`.
+./install_gpg_all.sh --suite-version 2.2 --sudo --ldconfig
 
 ###############
 #    TESTS    #

@@ -11,12 +11,11 @@ set -v # Print executed lines
 
 # The --sudo option is typically needed when installing to standard locations.
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
-# root (not recommended), and won't trigger post-install steps (including
-# ldconfig).
+# root (not recommended).
 ./install_gpg_all.sh \
-	--suite-version latest --sudo
+	--suite-version latest --sudo --ldconfig
 ./install_gpg_component.sh \
-	--component-name gpgme --component-version latest --sudo
+	--component-name gpgme --component-version latest --sudo --ldconfig
 
 ###############
 #    TESTS    #

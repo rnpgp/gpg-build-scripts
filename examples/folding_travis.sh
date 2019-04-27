@@ -12,10 +12,9 @@ set -v # Print executed lines
 
 # The --sudo option is typically needed when installing to standard locations.
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
-# root (not recommended), and won't trigger post-install steps (including
-# ldconfig).
-./install_gpg_all.sh --suite-version latest --sudo --folding-style travis | \
-	tee ./output
+# root (not recommended).
+./install_gpg_all.sh --suite-version latest --sudo --ldconfig \
+	--folding-style travis | tee ./output
 
 ###############
 #    TESTS    #
@@ -45,5 +44,7 @@ travis_fold:start:component.libgpg-error.build
 travis_fold:end:component.libgpg-error.build
 travis_fold:start:component.libgpg-error.install
 travis_fold:end:component.libgpg-error.install
+travis_fold:start:component.libgpg-error.post-install.ldconfig
+travis_fold:end:component.libgpg-error.post-install.ldconfig
 travis_fold:end:component.libgpg-error
 HERE_EXPECTATION

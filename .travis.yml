@@ -24,5 +24,6 @@ env:
     - SCRIPT="folding_travis"
     - SCRIPT="gpgme"
     - SCRIPT="install_prefix"
+    - SCRIPT="no_ldconfig"
     - SCRIPT="no_sudo"
     - SCRIPT="verify"
