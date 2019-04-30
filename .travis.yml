@@ -1,6 +1,5 @@
+language: bash
 dist: xenial
-
-install:
 
 before_script:
   # Disable sudo for travis user in no_sudo build
