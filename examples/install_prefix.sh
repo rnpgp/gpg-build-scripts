@@ -25,15 +25,20 @@ GPG_CONFIGURE_OPTS="--prefix=${GPG_PREFIX} \
 	--with-ksba-prefix=${EXEC_PREFIX} \
 	--with-npth-prefix=${EXEC_PREFIX}"
 
-export LD_RUN_PATH="${EXEC_PREFIX}/lib:${LD_RUN_PATH}"
-
 # Configure script looks for executables like gpg-error-config in locations
 # provided with $PATH and $GPG_PREFIX, hence we must enhance $PATH.
 export PATH="${EXEC_PREFIX}/bin:${PATH}"
 
 mkdir -p ${GPG_PREFIX} ${EXEC_PREFIX} ${MAN_DIR}
 
-./install_gpg_all.sh --suite-version latest --sudo \
+# The --ldconfig option is typically needed on GNU+Linux systems.  It causes
+# `ldconfig` to be run right after installing each component in order to
+# reconfigure dynamic linker run-time bindings, in other words to make the
+# installed shared libraries working correctly.  This option should not be
+# enabled on systems which do not feature `ldconfig`.  Note that despite using
+# custom prefixes, a correct path to shared libraries will be obtained from
+# the `./configure` script.
+./install_gpg_all.sh --suite-version latest --sudo --ldconfig \
 	--configure-opts "${GPG_CONFIGURE_OPTS}"
 
 ###############

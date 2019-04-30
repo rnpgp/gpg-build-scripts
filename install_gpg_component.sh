@@ -60,6 +60,30 @@ OPTIONS
 	--configure-opts OPTS
 		Options to be passed to "./configure" script.
 
+	--[no-]ldconfig
+		Whether to run 'ldconfig' after component is installed.
+
+		You probably want to turn it on when installing GnuPG on GNU+Linux
+		system.  It ensures that a correct library path is written to
+		"/etc/ld.so.conf.d/gpg-from_build_scripts.conf", and then runs
+		"ldconfig".  Library path is obtained from Makefile which has been
+		produced by "configure" script, therefore any options passed to
+		configure script via --configure-opts will be honoured (e.g. --prefix).
+
+		You may want to keep it off if you prefer to rely on LD_LIBRARY_PATH
+		environment variable instead, or if you need to customize 'ldconfig'
+		setup any further.
+
+		You definitely want not to enable it on systems which do not use
+		'ldconfig', e.g. MacOS.
+
+		This option requires that current user can execute 'ldconfig', and that
+		configuration file "/etc/ld.so.conf.d/gpg-from_build_scripts.conf" is
+		writtable for current user.  Note that 'sudo' will be used if --sudo
+		option is enabled as well.
+
+		By default this option is off.
+
 	--[no-]sudo
 		Whether to do 'sudo make install', or just 'make install', and whether
 		to update ldconfig configuration. Note that the ldconfig update is
@@ -100,6 +124,7 @@ set_default_options()
 {
 	_arg_build_dir=
 	_arg_configure_opts=
+	_arg_ldconfig="off"
 	_arg_sudo="off"
 	_arg_verify="off"
 	_arg_git="off"
@@ -137,6 +162,14 @@ parse_cli_arguments()
 			--configure-opts)
 				_arg_configure_opts="$2"
 				shift
+				shift
+				;;
+			--ldconfig)
+				_arg_ldconfig="on"
+				shift
+				;;
+			--no-ldconfig)
+				_arg_ldconfig="off"
 				shift
 				;;
 			--sudo)
@@ -198,6 +231,7 @@ display_config()
 component: "${_arg_component}"
 version: "${_arg_version}"
 git: "${_arg_git}"
+ld_config: "${_arg_ldconfig}"
 sudo: "${_arg_sudo}"
 verify: "${_arg_verify}"
 build_dir: "${_arg_build_dir:-<temporary directory>}"
@@ -311,9 +345,50 @@ build_and_install()
 	popd
 }
 
+post_install()
+{
+	if [[ "${_arg_ldconfig}" = "on" ]]; then
+		post_install_ldconfig
+	fi
+}
+
+post_install_ldconfig()
+{
+	local _ld_so_conf_file="/etc/ld.so.conf.d/gpg-from_build_scripts.conf"
+	local _libpath=`detect_libpath`
+
+	local _sudo=""
+	[[ "${_arg_sudo}" = "on" ]] && _sudo=sudo
+
+	fold_start "component.${_arg_component}.post-install.ldconfig"
+	${_sudo} tee "${_ld_so_conf_file}"<<<"${_libpath}"
+	${_sudo} ldconfig -v
+	fold_end "component.${_arg_component}.post-install.ldconfig"
+}
+
 set_component_build_dir()
 {
 	_component_build_dir=$1
+}
+
+# Returns actual libpath determined by ./configure script, typically
+# "/usr/local/lib".  Requires that Makefile for given component already exists.
+#
+# See: https://stackoverflow.com/a/55770976/304175
+#
+# Note that pushd/popd output must be suprressed, otherwise it will be captured
+# in calling function and treated as part of this function's return value.
+detect_libpath()
+{
+	pushd "${_component_build_dir}" > /dev/null
+	echo `make -f - display-libdir<<'HERE_MAKEFILE'
+include Makefile
+
+display-%:
+	@echo "$($*)"
+HERE_MAKEFILE
+`
+	popd > /dev/null #$_component_build_dir
 }
 
 ######################
@@ -402,13 +477,7 @@ fi
 pushd ${_arg_build_dir}
 fetch_source
 build_and_install
+post_install
 popd # _arg_build_dir
-
-if [[ "${_arg_component}" =~ ^gnupg ]] && [[ "${_arg_sudo}" = "on" ]]; then
-	fold_start "component.${_arg_component}.post-install"
-	sudo tee -a /etc/ld.so.conf.d/gpg2.conf <<<"/usr/local/lib"
-	sudo ldconfig -v
-	fold_end "component.${_arg_component}.post-install"
-fi
 
 fold_end "component.${_arg_component}"
