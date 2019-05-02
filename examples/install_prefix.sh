@@ -38,8 +38,15 @@ mkdir -p ${GPG_PREFIX} ${EXEC_PREFIX} ${MAN_DIR}
 # enabled on systems which do not feature `ldconfig`.  Note that despite using
 # custom prefixes, a correct path to shared libraries will be obtained from
 # the `./configure` script.
-./install_gpg_all.sh --suite-version latest --sudo --ldconfig \
-	--configure-opts "${GPG_CONFIGURE_OPTS}"
+if [[ `uname -s` == "Linux" ]]; then
+	# Linux
+	./install_gpg_all.sh --suite-version latest --sudo --ldconfig \
+		--configure-opts "${GPG_CONFIGURE_OPTS}"
+else
+	# Non-Linux
+	./install_gpg_all.sh --suite-version latest --sudo \
+		--configure-opts "${GPG_CONFIGURE_OPTS}"
+fi
 
 ###############
 #    TESTS    #

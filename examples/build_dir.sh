@@ -27,8 +27,15 @@ mkdir -p ${BUILD_DIR}
 # reconfigure dynamic linker run-time bindings, in other words to make the
 # installed shared libraries working correctly.  This option should not be
 # enabled on systems which do not feature `ldconfig`.
-./install_gpg_all.sh --suite-version 2.2 --sudo --ldconfig \
-	--build-dir ${BUILD_DIR}
+if [[ `uname -s` == "Linux" ]]; then
+	# Linux
+	./install_gpg_all.sh --suite-version 2.2 --sudo --ldconfig \
+		--build-dir ${BUILD_DIR}
+else
+	# Non-Linux
+	./install_gpg_all.sh --suite-version 2.2 --sudo \
+		--build-dir ${BUILD_DIR}
+fi
 
 ###############
 #    TESTS    #

@@ -9,12 +9,20 @@ set -v # Print executed lines
 #    SETUP    #
 ###############
 
+if [[ `uname -s` == "Linux" ]]; then
+	# Linux
+	WITH_LDCONFIG="--ldconfig"
+else
+	# Non-Linux
+	WITH_LDCONFIG="--no-ldconfig"
+fi
+
 # Note that configure options must be passed as a single argument.
 # Also, --enable-pinentry-curses is only relevant to Pinentry component,
 # --enable-gpg-sha256 and --disable-gpg-sha512 are relevant to GnuPG component,
 # whereas --disable-doc is relevant for all components.  This is okay, however
 # warnings will be printed.
-./install_gpg_all.sh --suite-version latest --sudo --ldconfig \
+./install_gpg_all.sh --suite-version latest --sudo ${WITH_LDCONFIG} \
 	--configure-opts "--disable-doc --enable-pinentry-curses \
 	--enable-gpg-sha256 --disable-gpg-sha512"
 

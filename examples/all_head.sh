@@ -35,8 +35,16 @@ fi
 # Qt Pinentry.  Although dependecies seem to be present in Travis CI enviromnent
 # by default, build fails for some reason.  Fixing it for unstable Pinentry
 # version is out of the scope of this example.
-./install_gpg_all.sh --suite-version master --sudo --ldconfig \
-	--configure-opts "--disable-doc --disable-pinentry-qt"
+if [[ `uname -s` == "Linux" ]]; then
+	# Linux
+	./install_gpg_all.sh --suite-version master --sudo --ldconfig \
+		--configure-opts "--disable-doc --disable-pinentry-qt"
+else
+	# Non-Linux
+	./install_gpg_all.sh --suite-version master --sudo \
+		--configure-opts "--disable-doc --disable-pinentry-qt"
+fi
+
 
 ###############
 #    TESTS    #

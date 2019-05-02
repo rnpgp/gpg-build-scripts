@@ -18,6 +18,14 @@ set -v # Print executed lines
 
 BUILD_DIR="${TRAVIS_BUILD_DIR}/b"
 
+if [[ `uname -s` == "Linux" ]]; then
+	# Linux
+	WITH_LDCONFIG="--ldconfig"
+else
+	# Non-Linux
+	WITH_LDCONFIG="--no-ldconfig"
+fi
+
 # Install specific versions of some components.  Disable documentation for
 # libgpg-error, and enable it (default) for other components.
 # In order to satisfy dependencies, components should be installed
@@ -27,39 +35,39 @@ BUILD_DIR="${TRAVIS_BUILD_DIR}/b"
 	--component-version latest \
 	--configure-opts "--disable-doc" \
 	--sudo \
-	--ldconfig
+	${WITH_LDCONFIG}
 ./install_gpg_component.sh \
 	--component-name libgcrypt \
 	--component-version latest \
 	--build-dir "${BUILD_DIR}" \
 	--sudo \
-	--ldconfig
+	${WITH_LDCONFIG}
 ./install_gpg_component.sh \
 	--component-name libassuan \
 	--component-version latest \
 	--sudo \
-	--ldconfig
+	${WITH_LDCONFIG}
 ./install_gpg_component.sh \
 	--component-name libksba \
 	--component-version latest \
 	--sudo \
-	--ldconfig
+	${WITH_LDCONFIG}
 ./install_gpg_component.sh \
 	--component-name npth \
 	--component-version latest \
 	--sudo \
-	--ldconfig
+	${WITH_LDCONFIG}
 ./install_gpg_component.sh \
 	--component-name pinentry \
 	--component-version 1.1.0 \
 	--sudo \
-	--ldconfig
+	${WITH_LDCONFIG}
 ./install_gpg_component.sh \
 	--component-name gnupg \
 	--component-version 2.2.10 \
 	--configure-opts "--enable-gpg-sha256 --disable-gpg-sha512 --enable-doc" \
 	--sudo \
-	--ldconfig
+	${WITH_LDCONFIG}
 
 ###############
 #    TESTS    #

@@ -48,7 +48,7 @@ export PATH="${PREFIX}/bin:${PATH}"
 
 export LD_RUN_PATH="${PREFIX}/lib:${LD_RUN_PATH}"
 
-mkdir -p "${PREFIX}"
+sudo mkdir -p "${PREFIX}"
 
 # The --sudo option is typically needed when installing to standard locations.
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
