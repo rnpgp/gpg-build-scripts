@@ -66,7 +66,7 @@ BUILD_DIR="${TRAVIS_BUILD_DIR}/b"
 ###############
 
 # Assert path to executable…
-[[ $(which gpg) == "/usr/local/bin/gpg" ]]
+[[ $(command -v gpg) == "/usr/local/bin/gpg" ]]
 
 # Assert that executable actually works…
 gpg --version

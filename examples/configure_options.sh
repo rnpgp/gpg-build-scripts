@@ -23,7 +23,7 @@ set -v # Print executed lines
 ###############
 
 # Assert path to executable…
-which gpg | grep -e "${GPG_PREFIX}/bin/gpg"
+command -v gpg | grep -e "${GPG_PREFIX}/bin/gpg"
 
 # Assert that executable actually works…
 gpg --version
