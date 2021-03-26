@@ -153,10 +153,10 @@ DONE
 #   ERROR HANDLING   #
 ######################
 
-readonly __progname=$(basename $0)
+readonly __progname="$(basename "$0")"
 
 errx() {
-	echo -e "$__progname: $@" >&2
+	echo -e "$__progname: $*" >&2
 	exit 1
 }
 
