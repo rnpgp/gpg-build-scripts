@@ -1,0 +1,114 @@
+name: GnuPG Build
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'release/**'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    container:
+      image: ${{ matrix.container.image }}
+    strategy:
+      matrix:
+        container:
+          - image: fedora:33
+            yum: dnf
+          - image: centos:8
+            yum: dnf
+          - image: centos:7
+            yum: yum
+        env:
+          - SCRIPT: all_latest
+          - SCRIPT: all_head
+          - SCRIPT: all_2.1
+          - SCRIPT: all_2.2
+          - SCRIPT: build_dir
+          - SCRIPT: components_individually
+          - SCRIPT: configure_options
+          # - SCRIPT: folding_travis # Probably not useful to test in GHA
+          - SCRIPT: gpgme
+          - SCRIPT: install_prefix
+          - SCRIPT: no_ldconfig
+          - SCRIPT: no_sudo
+          - SCRIPT: verify
+
+        # Not sure if worth it to fix the following
+        exclude:
+          - container:
+              image: fedora:33
+            env:
+              SCRIPT: all_2.1
+          - container:
+              image: fedora:33
+            env:
+              SCRIPT: all_2.2
+          - container:
+              image: fedora:33
+            env:
+              SCRIPT: build_dir
+          - container:
+              image: fedora:33
+            env:
+              SCRIPT: components_individually
+          - container:
+              image: fedora:33
+            env:
+              SCRIPT: verify
+          - container:
+              image: centos:7
+            env:
+              SCRIPT: gpgme
+
+    env: ${{ matrix.env }}
+    timeout-minutes: 70
+    continue-on-error: true
+    steps:
+      - name: Set up build environment for RPM platforms
+        run: |
+          ${{ matrix.container.yum }} -y -q update
+          ${{ matrix.container.yum }} -y -q install --skip-broken \
+            git \
+            clang gcc gcc-c++ make autoconf automake libtool byacc bison \
+            bzip2 gzip ncurses-devel bzip2-devel zlib-devel gettext-devel \
+            patch \
+            texinfo \
+            file \
+            which # for gpgme runs
+      - name: Set up build environment for those expecting sudo
+        if: ${{ matrix.env.SCRIPT != 'no_sudo' }}
+        run: |
+          ${{ matrix.container.yum }} -y -q install sudo
+      - name: Set up build environment for those expecting no sudo
+        if: ${{ matrix.env.SCRIPT == 'no_sudo' }}
+        run: |
+          rpm -e sudo || :
+      - name: Import GnuPG keys for "verify.sh" example
+        if: ${{ matrix.env.SCRIPT == 'verify' }}
+        run: |
+          gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 249B39D24F25E3B6 2071B08A33BD3F06 04376F3EE0856959 BCEF7E294B092E28
+      - name: Set up build environment for CentOS 7
+        if: ${{ matrix.container.image == 'centos:7' }}
+        run: |
+          rpm --import https://github.com/riboseinc/yum/raw/master/ribose-packages.pub
+          curl -L https://github.com/riboseinc/yum/raw/master/ribose.repo \
+            -o /etc/yum.repos.d/ribose.repo
+          ${{ matrix.container.yum }} -y -q install ribose-automake116
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Build GPG
+        run: |
+          if rpm --quiet -q ribose-automake116 && [[ "$PATH" != */opt/ribose/ribose-automake116/root/usr/bin* ]]; then
+            # set ACLOCAL_PATH if using ribose-automake116
+            ACLOCAL_PATH=$(scl enable ribose-automake116 -- aclocal --print-ac-dir):$(rpm --eval '%{_datadir}/aclocal')
+            export ACLOCAL_PATH
+            # set path etc
+            . /opt/ribose/ribose-automake116/enable
+          fi
+
+          "./examples/${SCRIPT}.sh"
