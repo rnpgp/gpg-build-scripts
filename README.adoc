@@ -1,6 +1,6 @@
 A set of build scripts for GNU Privacy Guard.
 
-image:https://img.shields.io/travis/riboseinc/gpg-build-scripts/master.svg["Build Status", link="https://travis-ci.org/riboseinc/gpg-build-scripts"]
+image:https://img.shields.io/travis/rnpgp/gpg-build-scripts/master.svg["Build Status", link="https://travis-ci.com/rnpgp/gpg-build-scripts"]
 
 == Prerequisites
 
