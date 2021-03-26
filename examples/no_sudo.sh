@@ -42,7 +42,7 @@ sudo --non-interactive true || SUDO_UNAVAILABLE=1
 [[ ${SUDO_UNAVAILABLE} -eq 1 ]]
 
 # Assert path to executable…
-[[ $(which gpg) == "${GPG_PREFIX}/bin/gpg" ]]
+[[ $(command -v gpg) == "${GPG_PREFIX}/bin/gpg" ]]
 
 # Assert that executable actually works…
 gpg --version

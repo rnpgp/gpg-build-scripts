@@ -28,7 +28,7 @@ set -v # Print executed lines
 # (By default, GnuPG 2.1 executable is named "gpg2".  This is changed in 2.2.
 # Pass "--enable-gpg2-is-gpg" to configure script if you want executable to
 # be named "gpg").
-[[ $(which gpg2) == "/usr/local/bin/gpg2" ]]
+[[ $(command -v gpg2) == "/usr/local/bin/gpg2" ]]
 
 # Assert that executable actually works…
 gpg2 --version

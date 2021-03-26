@@ -46,7 +46,7 @@ mkdir -p ${GPG_PREFIX} ${EXEC_PREFIX} ${MAN_DIR}
 ###############
 
 # Assert path to executable…
-[[ $(which gpg) == "${EXEC_PREFIX}/bin/gpg" ]]
+[[ $(command -v gpg) == "${EXEC_PREFIX}/bin/gpg" ]]
 
 # Assert that executable actually works…
 gpg --version

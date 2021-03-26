@@ -21,7 +21,7 @@ set -v # Print executed lines
 ###############
 
 # Assert path to executable…
-[[ $(which gpg) == "/usr/local/bin/gpg" ]]
+[[ $(command -v gpg) == "/usr/local/bin/gpg" ]]
 
 # Assert that executable actually works…
 gpg --version
