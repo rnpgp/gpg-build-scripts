@@ -441,6 +441,7 @@ fold_end()
 ######################
 
 readonly __progname="$(basename "$0")"
+readonly __progdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 
 errx() {
 	echo -e "$__progname: $*" >&2
