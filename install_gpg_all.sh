@@ -105,40 +105,40 @@ install_suite()
 {
 	case "${_arg_suite}" in
 		"2.2")
-			./install_gpg_component.sh --component-name libgpg-error --component-version 1.32 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libgcrypt --component-version 1.8.3 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libassuan --component-version 2.5.1 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libksba --component-version 1.3.5 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name npth --component-version 1.6 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name pinentry --component-version 1.1.0 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name gnupg --component-version 2.2.10 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libgpg-error --component-version 1.32 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libgcrypt --component-version 1.8.3 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libassuan --component-version 2.5.1 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libksba --component-version 1.3.5 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name npth --component-version 1.6 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name pinentry --component-version 1.1.0 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name gnupg --component-version 2.2.10 "${_arr_component_options[@]}"
 			;;
 		"2.1")
-			./install_gpg_component.sh --component-name libgpg-error --component-version 1.27 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libgcrypt --component-version 1.7.6 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libassuan --component-version 2.4.3 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libksba --component-version 1.3.5 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name npth --component-version 1.2 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name pinentry --component-version 0.9.5 "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name gnupg --component-version 2.1.20 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libgpg-error --component-version 1.27 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libgcrypt --component-version 1.7.6 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libassuan --component-version 2.4.3 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libksba --component-version 1.3.5 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name npth --component-version 1.2 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name pinentry --component-version 0.9.5 "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name gnupg --component-version 2.1.20 "${_arr_component_options[@]}"
 			;;
 		"latest")
-			./install_gpg_component.sh --component-name libgpg-error --component-version latest "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libgcrypt --component-version latest "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libassuan --component-version latest "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libksba --component-version latest "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name npth --component-version latest "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name pinentry --component-version latest "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name gnupg --component-version latest "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libgpg-error --component-version latest "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libgcrypt --component-version latest "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libassuan --component-version latest "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libksba --component-version latest "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name npth --component-version latest "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name pinentry --component-version latest "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name gnupg --component-version latest "${_arr_component_options[@]}"
 			;;
 		"master")
-			./install_gpg_component.sh --component-name libgpg-error --component-git-ref master "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libgcrypt --component-git-ref master "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libassuan --component-git-ref master "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name libksba --component-git-ref master "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name npth --component-git-ref master "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name pinentry --component-git-ref master "${_arr_component_options[@]}"
-			./install_gpg_component.sh --component-name gnupg --component-git-ref master "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libgpg-error --component-git-ref master "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libgcrypt --component-git-ref master "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libassuan --component-git-ref master "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name libksba --component-git-ref master "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name npth --component-git-ref master "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name pinentry --component-git-ref master "${_arr_component_options[@]}"
+			"${__progdir}"/install_gpg_component.sh --component-name gnupg --component-git-ref master "${_arr_component_options[@]}"
 			;;
 	esac
 
@@ -154,6 +154,7 @@ DONE
 ######################
 
 readonly __progname="$(basename "$0")"
+readonly __progdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 
 errx() {
 	echo -e "$__progname: $*" >&2
