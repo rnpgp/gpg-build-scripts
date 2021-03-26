@@ -1,7 +1,5 @@
 A set of build scripts for GNU Privacy Guard.
 
-image:https://img.shields.io/travis/rnpgp/gpg-build-scripts/master.svg["Build Status", link="https://travis-ci.com/rnpgp/gpg-build-scripts"]
-
 .Build matrix
 [options="header"]
 |==========================
@@ -228,9 +226,72 @@ https://www.gnupg.org/gph/en/manual/x56.html[GNU Privacy Handbook].
 TIP: For more information about checking integrity of GnuPG release tarballs,
 head to https://www.gnupg.org/download/integrity_check.html[GnuPG home page].
 
-=== Using with Travis CI
+=== Using with CI
 
-This scripts have been designed to work in Travis CI.  Use following listing
+==== GitHub Action
+
+The scripts have been designed to work in GitHub Action.  Use following listing
+as example of `.github/workflows/my_workflow.yml`:
+
+[source,yaml]
+----
+name: My workflow
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'release/**'
+
+env:
+  GPG_BUILD_DIR: "$GITHUB_WORKSPACE/build_gpg"
+  GPG_CONFIGURE_OPTS: >
+      --disable-doc --enable-pinentry-curses
+      --disable-pinentry-emacs --disable-pinentry-gtk2 --disable-pinentry-gnome3
+      --disable-pinentry-qt --disable-pinentry-qt4 --disable-pinentry-qt5
+      --disable-pinentry-tqt --disable-pinentry-fltk
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    container:
+      image: centos:8
+    strategy:
+      matrix:
+        env:
+          - GPG_VERSION: "latest"
+          - GPG_VERSION: "2.1"
+    env: ${{ matrix.env }}
+    steps:
+      - name: Set up build environment
+        run: |
+          dnf -y -q update
+          dnf -y -q install --skip-broken \
+            git \
+            clang gcc gcc-c++ make autoconf automake libtool byacc bison \
+            bzip2 gzip ncurses-devel bzip2-devel zlib-devel gettext-devel \
+            patch \
+            texinfo \
+            file \
+            which
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Build GPG
+        run: >
+          ./install_gpg_all.sh
+          --suite-version "$GPG_VERSION"
+          --build-dir "$GPG_BUILD_DIR"
+          --configure-opts "$GPG_CONFIGURE_OPTS"
+          --folding-style travis
+----
+
+
+==== Travis CI
+
+The scripts had been designed to work in Travis CI.  Use following listing
 as example of `.travis.yml`:
 
 [source,yaml]
