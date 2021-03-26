@@ -1,0 +1,56 @@
+name: CentOS 7 (latest)
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'release/**'
+
+env:
+  YUM: yum
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    container:
+      image: centos:7
+    strategy:
+      matrix:
+        env:
+          - SCRIPT: all_latest
+
+    env: ${{ matrix.env }}
+    timeout-minutes: 70
+    steps:
+      - name: Set up build environment
+        run: |
+          ${{ env.YUM }} -y -q update
+          ${{ env.YUM }} -y -q install --skip-broken \
+            sudo \
+            git \
+            clang gcc gcc-c++ make autoconf automake libtool byacc bison \
+            bzip2 gzip ncurses-devel bzip2-devel zlib-devel gettext-devel \
+            patch \
+            texinfo \
+            file
+
+          rpm --import https://github.com/riboseinc/yum/raw/master/ribose-packages.pub
+          curl -L https://github.com/riboseinc/yum/raw/master/ribose.repo \
+            -o /etc/yum.repos.d/ribose.repo
+          ${{ env.YUM }} -y -q install ribose-automake116
+      - name: Set up build environment for CentOS 7
+        run: |
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Build GPG
+        run: |
+          # set ACLOCAL_PATH if using ribose-automake116
+          ACLOCAL_PATH=$(scl enable ribose-automake116 -- aclocal --print-ac-dir):$(rpm --eval '%{_datadir}/aclocal')
+          export ACLOCAL_PATH
+          # set path etc
+          . /opt/ribose/ribose-automake116/enable
+
+          "./examples/${SCRIPT}.sh"

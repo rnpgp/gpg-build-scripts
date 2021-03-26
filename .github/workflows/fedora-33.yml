@@ -1,4 +1,4 @@
-name: GnuPG Build
+name: Fedora 33
 
 on:
   pull_request:
@@ -7,24 +7,18 @@ on:
       - master
       - 'release/**'
 
+env:
+  YUM: dnf
+
 jobs:
   tests:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     container:
-      image: ${{ matrix.container.image }}
+      image: fedora:33
     strategy:
       matrix:
-        container:
-          - image: fedora:33
-            yum: dnf
-          - image: centos:8
-            yum: dnf
-          - image: centos:7
-            yum: yum
         env:
-          - SCRIPT: all_latest
-          - SCRIPT: all_head
           - SCRIPT: all_2.1
           - SCRIPT: all_2.2
           - SCRIPT: build_dir
@@ -39,39 +33,25 @@ jobs:
 
         # Not sure if worth it to fix the following
         exclude:
-          - container:
-              image: fedora:33
-            env:
+          - env:
               SCRIPT: all_2.1
-          - container:
-              image: fedora:33
-            env:
+          - env:
               SCRIPT: all_2.2
-          - container:
-              image: fedora:33
-            env:
+          - env:
               SCRIPT: build_dir
-          - container:
-              image: fedora:33
-            env:
+          - env:
               SCRIPT: components_individually
-          - container:
-              image: fedora:33
-            env:
+          - env:
               SCRIPT: verify
-          - container:
-              image: centos:7
-            env:
-              SCRIPT: gpgme
 
     env: ${{ matrix.env }}
     timeout-minutes: 70
     continue-on-error: true
     steps:
-      - name: Set up build environment for RPM platforms
+      - name: Set up build environment
         run: |
-          ${{ matrix.container.yum }} -y -q update
-          ${{ matrix.container.yum }} -y -q install --skip-broken \
+          ${{ env.YUM }} -y -q update
+          ${{ env.YUM }} -y -q install --skip-broken \
             git \
             clang gcc gcc-c++ make autoconf automake libtool byacc bison \
             bzip2 gzip ncurses-devel bzip2-devel zlib-devel gettext-devel \
@@ -82,7 +62,7 @@ jobs:
       - name: Set up build environment for those expecting sudo
         if: ${{ matrix.env.SCRIPT != 'no_sudo' }}
         run: |
-          ${{ matrix.container.yum }} -y -q install sudo
+          ${{ env.YUM }} -y -q install sudo
       - name: Set up build environment for those expecting no sudo
         if: ${{ matrix.env.SCRIPT == 'no_sudo' }}
         run: |
@@ -91,24 +71,9 @@ jobs:
         if: ${{ matrix.env.SCRIPT == 'verify' }}
         run: |
           gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 249B39D24F25E3B6 2071B08A33BD3F06 04376F3EE0856959 BCEF7E294B092E28
-      - name: Set up build environment for CentOS 7
-        if: ${{ matrix.container.image == 'centos:7' }}
-        run: |
-          rpm --import https://github.com/riboseinc/yum/raw/master/ribose-packages.pub
-          curl -L https://github.com/riboseinc/yum/raw/master/ribose.repo \
-            -o /etc/yum.repos.d/ribose.repo
-          ${{ matrix.container.yum }} -y -q install ribose-automake116
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Build GPG
         run: |
-          if rpm --quiet -q ribose-automake116 && [[ "$PATH" != */opt/ribose/ribose-automake116/root/usr/bin* ]]; then
-            # set ACLOCAL_PATH if using ribose-automake116
-            ACLOCAL_PATH=$(scl enable ribose-automake116 -- aclocal --print-ac-dir):$(rpm --eval '%{_datadir}/aclocal')
-            export ACLOCAL_PATH
-            # set path etc
-            . /opt/ribose/ribose-automake116/enable
-          fi
-
           "./examples/${SCRIPT}.sh"
