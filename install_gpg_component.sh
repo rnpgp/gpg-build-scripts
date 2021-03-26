@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 #
+# shellcheck disable=SC2155
 
 ######################
 # ARGUMENTS HANDLING #
@@ -218,7 +219,7 @@ set_important_configure_options()
 ensure_options_compatibility()
 {
 	if [[ ${_arg_git} == "on" ]] && [[ ${_arg_verify} = "on" ]]; then
-		echo <<ECHO
+		cat <<ECHO
 ERROR --verify option cannot be used together with --component-git-ref.
 ECHO
 		exit 600
@@ -245,14 +246,14 @@ CONFIG
 determine_latest_version()
 {
 	fold_start "component.${_arg_component}.detect-latest"
-	local _component_underscored=`echo "${_arg_component}" | tr - _`
-	_arg_version=`curl "https://versions.gnupg.org/swdb.lst" |
+	local _component_underscored=$(echo "${_arg_component}" | tr - _)
+	_arg_version=$(curl "https://versions.gnupg.org/swdb.lst" |
 		grep "_ver" |
 		grep -v "w32" |
 		sort --reverse |
 		grep "${_component_underscored}" |
 		head -n 1 |
-		cut -d " " -f 2`
+		cut -d " " -f 2)
 	echo "The latest version of ${_arg_component} is ${_arg_version}."
 	fold_end "component.${_arg_component}.detect-latest"
 }
@@ -286,13 +287,13 @@ fetch_release()
 	local _tarball_file_name="${_arg_component}-${_arg_version}.tar.bz2"
 	local _tarball_url="https://gnupg.org/ftp/gcrypt/${_arg_component}/${_tarball_file_name}"
 	local _signature_url="${_tarball_url}.sig"
-	curl ${_tarball_url} --remote-name --retry 5
+	curl "${_tarball_url}" --remote-name --retry 5
 	if [[ "${_arg_verify}" = "on" ]]; then
-		curl ${_signature_url} --remote-name --retry 5
-		verify_tarball_signature ${_tarball_file_name}
+		curl "${_signature_url}" --remote-name --retry 5
+		verify_tarball_signature "${_tarball_file_name}"
 	fi
-	tar -xjf ${_tarball_file_name}
-	rm ${_tarball_file_name}
+	tar -xjf "${_tarball_file_name}"
+	rm "${_tarball_file_name}"
 	set_component_build_dir "${_arg_component}-${_arg_version}"
 }
 
@@ -302,14 +303,14 @@ fetch_from_git()
 	set_component_build_dir "${_arg_component}-git-${_arg_version}"
 
 	if [[ ! -d "${_component_build_dir}" ]]; then
-		git clone ${_git_url} "${_component_build_dir}"
+		git clone "${_git_url}" "${_component_build_dir}"
 		pushd "${_component_build_dir}"
-		git checkout ${_arg_version}
+		git checkout "${_arg_version}"
 		popd
 	else
 		pushd "${_component_build_dir}"
 		git fetch # need to fetch prior checkout, ref may be nonexistent locally
-		git checkout ${_arg_version}
+		git checkout "${_arg_version}"
 		git pull # in case of outdated local branch
 		popd
 	fi
@@ -334,6 +335,7 @@ build_and_install()
 		fold_end "component.${_arg_component}.autogen"
 	fi
 	fold_start "component.${_arg_component}.configure"
+	# shellcheck disable=SC2086
 	./configure ${_arg_configure_opts}
 	fold_end "component.${_arg_component}.configure"
 	fold_start "component.${_arg_component}.build"
@@ -355,7 +357,7 @@ post_install()
 post_install_ldconfig()
 {
 	local _ld_so_conf_file="/etc/ld.so.conf.d/gpg-from_build_scripts.conf"
-	local _libpath=`detect_libpath`
+	local _libpath=$(detect_libpath)
 
 	local _sudo=""
 	[[ "${_arg_sudo}" = "on" ]] && _sudo=sudo
@@ -381,13 +383,13 @@ set_component_build_dir()
 detect_libpath()
 {
 	pushd "${_component_build_dir}" > /dev/null
-	echo `make -f - display-libdir<<'HERE_MAKEFILE'
+	make -f - display-libdir<<'HERE_MAKEFILE'
 include Makefile
 
 display-%:
 	@echo "$($*)"
 HERE_MAKEFILE
-`
+
 	popd > /dev/null #$_component_build_dir
 }
 
@@ -438,10 +440,10 @@ fold_end()
 #   ERROR HANDLING   #
 ######################
 
-readonly __progname=$(basename $0)
+readonly __progname="$(basename "$0")"
 
 errx() {
-	echo -e "$__progname: $@" >&2
+	echo -e "$__progname: $*" >&2
 	exit 1
 }
 
@@ -468,13 +470,13 @@ if [[ "${_arg_version}" =~ ^latest ]]; then
 	determine_latest_version
 fi
 
-if [[ "x${_arg_build_dir}" == "x" ]]; then
+if [[ -z "${_arg_build_dir}" ]]; then
 	create_temporary_build_dir
 else
-	mkdir -p ${_arg_build_dir}
+	mkdir -p "${_arg_build_dir}"
 fi
 
-pushd ${_arg_build_dir}
+pushd "${_arg_build_dir}"
 fetch_source
 build_and_install
 post_install

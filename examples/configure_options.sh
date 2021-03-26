@@ -38,4 +38,4 @@ gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.2\.[0-9]+"
 
 # Assert configured algorithms (enabled SHA256 and disabled SHA512)…
 gpg --version | grep -i "SHA256"
-[[ ! $(gpg --version | grep -i "SHA512") ]]
+gpg --version | grep -q -v -i "SHA512"

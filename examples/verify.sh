@@ -42,4 +42,4 @@ gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.2\.[0-9]+"
 
 # Assert that verification has happened…
 grep -F "gpg: Good signature from" ./output | tee ./good_signatures
-[[ `wc -l < ./good_signatures` -gt 6 ]]
+[[ $(wc -l < ./good_signatures) -gt 6 ]]
