@@ -323,12 +323,60 @@ verify_tarball_signature()
 	gpg --verify "${_signature_file_name}" "${_tarball_file_name}"
 }
 
+patch_sources() {
+	# For older libgpg-error versions e.g. 1.32 vs newer gawk versions e.g. 5
+	#
+	# See: https://github.com/openwrt/packages/commit/77587bedaeb1eb7f304a380dcc931537fce195b8
+	if [[ "${_arg_component}" = libgpg-error ]]; then
+		for file in src/{Makefile.{in,am},mkstrtable.awk}; do
+			if [[ -f "${file}" ]]; then
+				sed -i'' \
+					-e "s/\bnamespace\b/varerrno/g" "${file}"
+			fi
+		done
+	fi
+
+	# For gpgme in CentOS 7
+	# # XXX: This does not seem to work.
+	# if [[ "${_arg_component}" = gpgme ]]; then
+	# 	local file=configure.ac
+	# 	# XXX: debug
+	# 	echo "checking if file ${file} exists..." >&2
+	# 	if [[ -f "${file}" ]]
+	# 	then
+	# 		echo
+	# 		echo "File ${file} exists, patching." >&2
+	# 		echo "Before patch:" >&2
+	# 		grep -5 AC_PROG_CC_STDC "${file}" || :
+
+	# 		sed -i'' \
+	# 			-e 's/^AC_PROG_CC$/AC_PROG_CC\nAC_PROG_CC_STDC/g' "${file}"
+
+	# 		echo
+	# 		echo "After patch (AC_PROG_CC_STDC):" >&2
+	# 		grep -5 AC_PROG_CC_STDC "${file}" || :
+	# 		echo
+	# 	fi
+	# fi
+
+	# For older gnupg versions (specific version uncertain)
+	# XXX: Fixing this "iobuf defined multiple times" issue opens a can of
+	# worms.  Disabling for now.
+	# if [[ "${_arg_component}" = gnupg ]]; then
+	# 	patch -s -p0 < "${__progdir}"/patches/gnupg-common-iobuf-c.patch common/iobuf.c || :
+	# 	patch -s -p0 < "${__progdir}"/patches/gnupg-common-iobuf-h.patch common/iobuf.h || :
+	# fi
+}
+
 build_and_install()
 {
 	local _sudo=""
 	[[ "${_arg_sudo}" = "on" ]] && _sudo=sudo
 
 	pushd "${_component_build_dir}"
+
+	patch_sources
+
 	if [[ ! -f configure ]]; then
 		fold_start "component.${_arg_component}.autogen"
 		./autogen.sh

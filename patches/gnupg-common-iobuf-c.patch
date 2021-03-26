@@ -1,0 +1,12 @@
+diff --git a/common/iobuf.c b/common/iobuf.c
+index db5d062cd..43f2e101c 100644
+--- a/common/iobuf.c
++++ b/common/iobuf.c
+@@ -123,6 +123,7 @@ struct close_cache_s
+ typedef struct close_cache_s *close_cache_t;
+ static close_cache_t close_cache;
+
++int iobuf_debug_mode;
+
+
+ #ifdef HAVE_W32_SYSTEM
