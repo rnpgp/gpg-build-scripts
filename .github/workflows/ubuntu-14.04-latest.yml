@@ -1,0 +1,40 @@
+name: Ubuntu 14.04 (latest)
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'release/**'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    container:
+      image: ubuntu:14.04
+    strategy:
+      matrix:
+        env:
+          - SCRIPT: all_latest
+
+    env: ${{ matrix.env }}
+    timeout-minutes: 70
+    steps:
+      - name: Set up build environment
+        run: |
+          SUDO=
+          ! command -v sudo >/dev/null || SUDO=sudo
+          $SUDO apt-get update
+          $SUDO apt-get -y install \
+            sudo \
+            git \
+            autoconf automake libtool bison \
+            libncurses5-dev libncursesw5-dev libbz2-dev libz-dev \
+            libgnutls28-dev bzip2 make gettext texinfo gnutls-bin build-essential g++
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Build GPG
+        run: |
+          "./examples/${SCRIPT}.sh"

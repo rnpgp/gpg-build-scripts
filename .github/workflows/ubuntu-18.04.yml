@@ -1,0 +1,62 @@
+name: Ubuntu 18.04
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'release/**'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    container:
+      image: ubuntu:18.04
+    strategy:
+      matrix:
+        env:
+          - SCRIPT: all_2.1
+          - SCRIPT: all_2.2
+          - SCRIPT: build_dir
+          - SCRIPT: components_individually
+          - SCRIPT: configure_options
+          # - SCRIPT: folding_travis # Probably not useful to test in GHA
+          - SCRIPT: gpgme
+          - SCRIPT: install_prefix
+          - SCRIPT: no_ldconfig
+          - SCRIPT: no_sudo
+          - SCRIPT: verify
+
+    env: ${{ matrix.env }}
+    timeout-minutes: 70
+    continue-on-error: true
+    steps:
+      - name: Set up build environment
+        run: |
+          SUDO=
+          ! command -v sudo >/dev/null || SUDO=sudo
+          $SUDO apt-get update
+          $SUDO apt-get -y install \
+            git \
+            autoconf automake libtool bison \
+            libncurses5-dev libncursesw5-dev libbz2-dev libz-dev \
+            libgnutls28-dev bzip2 make gettext texinfo gnutls-bin build-essential g++
+      - name: Set up build environment for those expecting sudo
+        if: ${{ matrix.env.SCRIPT != 'no_sudo' }}
+        run: |
+          apt-get -y install sudo
+      - name: Set up build environment for those expecting no sudo
+        if: ${{ matrix.env.SCRIPT == 'no_sudo' }}
+        run: |
+          apt-get -y remove sudo || :
+      - name: Import GnuPG keys for "verify.sh" example
+        if: ${{ matrix.env.SCRIPT == 'verify' }}
+        run: |
+          gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 249B39D24F25E3B6 2071B08A33BD3F06 04376F3EE0856959 BCEF7E294B092E28
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Build GPG
+        run: |
+          "./examples/${SCRIPT}.sh"

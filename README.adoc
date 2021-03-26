@@ -1,7 +1,48 @@
 A set of build scripts for GNU Privacy Guard.
 
 image:https://img.shields.io/travis/rnpgp/gpg-build-scripts/master.svg["Build Status", link="https://travis-ci.com/rnpgp/gpg-build-scripts"]
-image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/build-on-rpm-platforms.yml/badge.svg["GnuPG Build", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/build-on-rpm-platforms.yml"]
+
+.Build matrix
+[options="header"]
+|==========================
+|distro       |        |latest  |head
+
+|Fedora 33
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/fedora-33.yml/badge.svg["Fedora 33", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/fedora-33.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/fedora-33-latest.yml/badge.svg["Fedora 33 (latest)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/fedora-33-latest.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/fedora-33-head.yml/badge.svg["Fedora 33 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/fedora-33-head.yml"]
+
+|CentOS 8
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/centos-8.yml/badge.svg["CentOS 8", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/centos-8.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/centos-8-latest.yml/badge.svg["CentOS 8 (latest)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/centos-8-latest.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/centos-8-head.yml/badge.svg["CentOS 8 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/centos-8-head.yml"]
+
+|CentOS 7
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/centos-7.yml/badge.svg["CentOS 7", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/centos-7.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/centos-7-latest.yml/badge.svg["CentOS 7 (latest)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/centos-7-latest.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/centos-7-head.yml/badge.svg["CentOS 7 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/centos-7-head.yml"]
+
+|Ubuntu 20.04
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-20.04.yml/badge.svg["Ubuntu 20.04", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-20.04.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-20.04-latest.yml/badge.svg["Ubuntu 20.04 (latest)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-20.04-latest.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-20.04-head.yml/badge.svg["Ubuntu 20.04 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-20.04-head.yml"]
+
+|Ubuntu 18.04
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-18.04.yml/badge.svg["Ubuntu 18.04", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-18.04.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-18.04-latest.yml/badge.svg["Ubuntu 18.04 (latest)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-18.04-latest.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-18.04-head.yml/badge.svg["Ubuntu 18.04 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-18.04-head.yml"]
+
+|Ubuntu 16.04
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-16.04.yml/badge.svg["Ubuntu 16.04", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-16.04.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-16.04-latest.yml/badge.svg["Ubuntu 16.04 (latest)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-16.04-latest.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-16.04-head.yml/badge.svg["Ubuntu 16.04 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-16.04-head.yml"]
+
+|Ubuntu 14.04
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04.yml/badge.svg["Ubuntu 14.04", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-latest.yml/badge.svg["Ubuntu 14.04 (latest)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-latest.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-head.yml/badge.svg["Ubuntu 14.04 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-head.yml"]
+|==========================
+
 
 == Prerequisites
 

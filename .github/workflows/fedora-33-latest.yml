@@ -1,0 +1,44 @@
+name: Fedora 33 (latest)
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'release/**'
+
+env:
+  YUM: dnf
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    container:
+      image: fedora:33
+    strategy:
+      matrix:
+        env:
+          - SCRIPT: all_latest
+
+    env: ${{ matrix.env }}
+    timeout-minutes: 70
+    steps:
+      - name: Set up build environment
+        run: |
+          ${{ env.YUM }} -y -q update
+          ${{ env.YUM }} -y -q install --skip-broken \
+            sudo \
+            git \
+            clang gcc gcc-c++ make autoconf automake libtool byacc bison \
+            bzip2 gzip ncurses-devel bzip2-devel zlib-devel gettext-devel \
+            patch \
+            texinfo \
+            file
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Build GPG
+        run: |
+          "./examples/${SCRIPT}.sh"
