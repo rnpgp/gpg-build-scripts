@@ -86,6 +86,15 @@ parse_cli_arguments()
 	done
 }
 
+# Check to see if this file is being run or sourced from another script
+# See: https://unix.stackexchange.com/a/215279
+is_sourced()
+{
+	[[ "${#FUNCNAME[@]}" -ge 2 ]] \
+		&& [[ "${FUNCNAME[0]}" = is_sourced ]] \
+		&& [[ "${FUNCNAME[1]}" = source ]]
+}
+
 ######################
 #      BUILDING      #
 ######################
@@ -235,9 +244,15 @@ errx() {
 
 set -e # Early exit if any command returns non-zero status code
 
-set_default_options
-parse_cli_arguments "$@"
-set_compiler_and_linker_flags
-install_suite
+main() {
+	set_default_options
+	parse_cli_arguments "$@"
+	set_compiler_and_linker_flags
+	install_suite
+}
+
+if ! is_sourced; then
+	main "$@"
+fi
 
 exit 0
