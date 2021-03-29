@@ -56,7 +56,7 @@ BUILD_DIR="${TRAVIS_BUILD_DIR}/b"
 	--ldconfig
 ./install_gpg_component.sh \
 	--component-name gnupg \
-	--component-version 2.2.10 \
+	--component-version 2.2.20 \
 	--configure-opts "--enable-gpg-sha256 --disable-gpg-sha512 --enable-doc" \
 	--sudo \
 	--ldconfig
@@ -72,7 +72,7 @@ BUILD_DIR="${TRAVIS_BUILD_DIR}/b"
 gpg --version
 
 # Assert executable version…
-gpg --version | head -n 1 | cut -d" " -f 3 | grep -xF "2.2.10"
+gpg --version | head -n 1 | cut -d" " -f 3 | grep -xF "2.2.20"
 
 # Assert configured algorithms (enabled SHA256 and disabled SHA512)…
 gpg --version | grep -i "SHA256"
