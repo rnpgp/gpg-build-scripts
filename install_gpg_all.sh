@@ -101,6 +101,66 @@ set_compiler_and_linker_flags()
 	esac
 }
 
+# Usage:
+#   install_gpg_components \
+#     libgpg-error 1.42    \
+#     libgcrypt    1.9.2   \
+#     libassuan    latest  \
+#     gnupg        master  \
+#     -- "${_arr_component_options[@]}"
+install_gpg_components()
+{
+	local component_name component_version component_name_version
+	local component_name_versions=()
+	local is_version_string
+
+	local parse_version_flip=  # internal counter for parsing version string pairs
+	for arg in "$@"; do
+		shift
+
+		if [[ -n "${parse_version_flip}" ]]; then
+			parse_version_flip=
+			continue
+		fi
+
+		if [[ "${arg}" = -- ]]; then
+			break
+		else
+			if [[ "${1}" = -- || -z "${1}" ]]; then
+				>&2 echo "Error: version for '${arg}' not specified.  Aborting."
+				return 1
+			fi
+			component_name_versions+=("${arg}:::${1}")
+			parse_version_flip=1
+		fi
+	done
+
+	local install_opts=()
+	for component_name_version in "${component_name_versions[@]}"; do
+		component_name="${component_name_version%:::*}"
+		component_version="${component_name_version#*:::}"
+
+		case "${component_version}" in
+			*.*)
+				is_version_string=1 ;;
+			latest*)
+				is_version_string=1 ;;
+			*)
+				is_version_string= ;;
+		esac
+
+		install_opts=(--component-name "${component_name}")
+
+		if [[ -n "${is_version_string}" ]]; then
+			install_opts+=(--component-version "${component_version}")
+		else
+			install_opts+=(--component-git-ref "${component_version}")
+		fi
+
+		"${__progdir}"/install_gpg_component.sh "${install_opts[@]}" "$@"
+	done
+}
+
 install_suite()
 {
 	case "${_arg_suite}" in
