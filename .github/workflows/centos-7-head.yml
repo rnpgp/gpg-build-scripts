@@ -40,8 +40,6 @@ jobs:
           curl -L https://github.com/riboseinc/yum/raw/master/ribose.repo \
             -o /etc/yum.repos.d/ribose.repo
           ${{ env.YUM }} -y -q install ribose-automake116
-      - name: Set up build environment for CentOS 7
-        run: |
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0

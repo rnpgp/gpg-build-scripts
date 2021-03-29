@@ -68,8 +68,6 @@ jobs:
         if: ${{ matrix.env.SCRIPT == 'verify' }}
         run: |
           gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 249B39D24F25E3B6 2071B08A33BD3F06 04376F3EE0856959 BCEF7E294B092E28
-      - name: Set up build environment for CentOS 7
-        run: |
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
