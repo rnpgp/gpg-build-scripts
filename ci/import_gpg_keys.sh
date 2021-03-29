@@ -10,7 +10,23 @@
 
 if [[ "${CI:-}" = "true" ]]
 then
-	gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 249B39D24F25E3B6 2071B08A33BD3F06 BCEF7E294B092E28 528897B826403ADA
+	declare keyservers=(
+		hkp://pool.sks-keyservers.net:80
+		hkp://keyserver.ubuntu.com:80
+	)
+
+	# See: https://gnupg.org/signature_key.html
+	declare keys=(
+		249B39D24F25E3B6  # Werner Koch (dist sig)
+		2071B08A33BD3F06  # NIIBE Yutaka (GnuPG Release Key) <gniibe 'at' fsij.org>
+		BCEF7E294B092E28  # Andre Heinecke (Release Signing Key)
+		528897B826403ADA  # Werner Koch (dist signing 2020)
+	)
+
+	for keyserver in "${keyservers[@]}"; do
+		gpg --keyserver "${keyserver}" --recv-keys "${keys[@]}" && break
+		>&2 echo "Warning: There were issues receiving keys from ${keyserver}."
+	done
 else
 	>&2 echo "Error: Not in CI environment.  Only use this script if you are really sure what you're doing.  Aborting."
 	exit 1
