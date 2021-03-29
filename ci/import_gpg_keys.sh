@@ -10,7 +10,7 @@
 
 if [[ "${CI:-}" = "true" ]]
 then
-	gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 249B39D24F25E3B6 2071B08A33BD3F06 04376F3EE0856959 BCEF7E294B092E28
+	gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 249B39D24F25E3B6 2071B08A33BD3F06 BCEF7E294B092E28 528897B826403ADA
 else
 	>&2 echo "Error: Not in CI environment.  Only use this script if you are really sure what you're doing.  Aborting."
 	exit 1
