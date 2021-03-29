@@ -49,6 +49,9 @@ jobs:
     timeout-minutes: 70
     continue-on-error: true
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Set up build environment
         run: |
           SUDO=
@@ -70,10 +73,7 @@ jobs:
       - name: Import GnuPG keys for "verify.sh" example
         if: ${{ matrix.env.SCRIPT == 'verify' }}
         run: |
-          gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 249B39D24F25E3B6 2071B08A33BD3F06 04376F3EE0856959 BCEF7E294B092E28
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+          bash ci/import_gpg_keys.sh
       - name: Build GPG
         run: |
           "./examples/${SCRIPT}.sh"

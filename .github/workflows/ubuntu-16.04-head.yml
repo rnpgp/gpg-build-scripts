@@ -21,6 +21,9 @@ jobs:
     env: ${{ matrix.env }}
     timeout-minutes: 70
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Set up build environment
         run: |
           SUDO=
@@ -32,9 +35,6 @@ jobs:
             autoconf automake libtool bison \
             libncurses5-dev libncursesw5-dev libbz2-dev libz-dev \
             libgnutls28-dev bzip2 make gettext texinfo gnutls-bin build-essential g++
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Build GPG
         run: |
           "./examples/${SCRIPT}.sh"
