@@ -21,6 +21,7 @@ then
 		2071B08A33BD3F06  # NIIBE Yutaka (GnuPG Release Key) <gniibe 'at' fsij.org>
 		BCEF7E294B092E28  # Andre Heinecke (Release Signing Key)
 		528897B826403ADA  # Werner Koch (dist signing 2020)
+		6F7F0F91D138FC7B  # Damien Goutte-Gattat (XXX: Not on the page listed above, but needed for pinentry 1.1.1)
 	)
 
 	for keyserver in "${keyservers[@]}"; do
