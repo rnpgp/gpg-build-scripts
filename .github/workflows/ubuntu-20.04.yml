@@ -40,8 +40,6 @@ jobs:
               SCRIPT: build_dir
           - env:
               SCRIPT: components_individually
-          - env:
-              SCRIPT: verify
 
     env: ${{ matrix.env }}
     timeout-minutes: 70
