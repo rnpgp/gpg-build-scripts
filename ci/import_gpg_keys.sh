@@ -26,8 +26,8 @@ then
 	)
 
 	for keyserver in "${keyservers[@]}"; do
-		gpg --keyserver "${keyserver}" --recv-keys "${keys[@]}" && break
-		>&2 echo "Warning: There were issues receiving keys from ${keyserver}."
+		gpg --keyserver "${keyserver}" --recv-keys "${keys[@]}" || \
+			>&2 echo "Warning: There were issues receiving keys from ${keyserver}."
 	done
 else
 	>&2 echo "Error: Not in CI environment.  Only use this script if you are really sure what you're doing.  Aborting."
