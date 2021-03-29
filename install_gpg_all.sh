@@ -176,12 +176,12 @@ install_suite()
 		"2.2")
 			install_gpg_components  \
 				libgpg-error 1.32   \
-				libgcrypt    1.8.3  \
-				libassuan    2.5.1  \
-				libksba      1.3.5  \
+				libgcrypt    1.8.6  \
+				libassuan    2.5.3  \
+				libksba      1.4.0  \
 				npth         1.6    \
 				pinentry     1.1.0  \
-				gnupg        2.2.10 \
+				gnupg        2.2.20 \
 				-- "${_arr_component_options[@]}"
 			;;
 		"2.1")
