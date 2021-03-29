@@ -22,6 +22,7 @@ then
 		BCEF7E294B092E28  # Andre Heinecke (Release Signing Key)
 		528897B826403ADA  # Werner Koch (dist signing 2020)
 		6F7F0F91D138FC7B  # Damien Goutte-Gattat (XXX: Not on the page listed above, but needed for pinentry 1.1.1)
+		04376F3EE0856959  # David Shaw (GnuPG Release Signing Key) (XXX: Not on the page listed above, but needed for libgpg-error 1.32)
 	)
 
 	for keyserver in "${keyservers[@]}"; do
