@@ -36,8 +36,6 @@ jobs:
           - env:
               SCRIPT: all_2.1
           - env:
-              SCRIPT: all_2.2
-          - env:
               SCRIPT: build_dir
           - env:
               SCRIPT: components_individually
