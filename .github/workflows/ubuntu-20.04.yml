@@ -36,10 +36,6 @@ jobs:
         exclude:
           - env:
               SCRIPT: all_2.1
-          - env:
-              SCRIPT: build_dir
-          - env:
-              SCRIPT: components_individually
 
     env: ${{ matrix.env }}
     timeout-minutes: 70
