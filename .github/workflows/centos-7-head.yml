@@ -24,6 +24,9 @@ jobs:
     env: ${{ matrix.env }}
     timeout-minutes: 70
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Set up build environment
         run: |
           ${{ env.YUM }} -y -q update
@@ -40,9 +43,6 @@ jobs:
           curl -L https://github.com/riboseinc/yum/raw/master/ribose.repo \
             -o /etc/yum.repos.d/ribose.repo
           ${{ env.YUM }} -y -q install ribose-automake116
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Build GPG
         run: |
           # set ACLOCAL_PATH if using ribose-automake116
