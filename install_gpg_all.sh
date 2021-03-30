@@ -175,7 +175,7 @@ install_suite()
 	case "${_arg_suite}" in
 		"2.2")
 			install_gpg_components  \
-				libgpg-error 1.32   \
+				libgpg-error 1.33   \
 				libgcrypt    1.8.6  \
 				libassuan    2.5.3  \
 				libksba      1.4.0  \
