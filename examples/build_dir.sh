@@ -14,7 +14,7 @@ set -v # Print executed lines
 #    SETUP    #
 ###############
 
-BUILD_DIR="${TRAVIS_BUILD_DIR}/b"
+BUILD_DIR="${TRAVIS_BUILD_DIR:-$(mktemp -d)}/b"
 
 mkdir -p ${BUILD_DIR}
 
