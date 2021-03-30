@@ -109,19 +109,6 @@ OPTIONS
 		Whether to pass VERBOSE=1 to 'make' and 'make install'.
 		By default it is off.
 
-	Output options:
-
-	--folding-style STYLE
-		If set, enables output folding.  STYLE defines the folding notation
-		used.  Following STYLE values are recognized:
-
-		"none"
-			Disable folding.  This is default.
-
-		"travis"
-			Fold output for Travis CI builds.  See this example Travis job:
-			https://api.travis-ci.org/v3/job/15440998/log.txt
-
 	Help:
 
 	--help, -h
@@ -141,7 +128,6 @@ set_default_options()
 	_arg_force_autogen="off"
 	_arg_git="off"
 	_arg_color="off"
-	_arg_folding_style="none"
 }
 
 parse_cli_arguments()
@@ -216,11 +202,6 @@ parse_cli_arguments()
 				_arg_verbose=()
 				shift
 				;;
-			--folding-style)
-				_arg_folding_style="$2"
-				shift
-				shift
-				;;
 			-h|--help)
 				print_help
 				exit 0
@@ -272,7 +253,6 @@ CONFIG
 # version of component ${_arg_component} to ${_arg_version} variable.
 determine_latest_version()
 {
-	fold_start "component.${_arg_component}.detect-latest"
 	local _component_underscored=$(echo "${_arg_component}" | tr - _)
 	_arg_version=$(curl "https://versions.gnupg.org/swdb.lst" |
 		grep "_ver" |
@@ -282,7 +262,6 @@ determine_latest_version()
 		head -n 1 |
 		cut -d " " -f 2)
 	echo "The latest version of ${_arg_component} is ${_arg_version}."
-	fold_end "component.${_arg_component}.detect-latest"
 }
 
 create_temporary_build_dir()
@@ -300,13 +279,11 @@ remove_temporary_build_dir()
 
 fetch_source()
 {
-	fold_start "component.${_arg_component}.fetch"
 	if [[ "${_arg_git}" = "on" ]]; then
 		fetch_from_git
 	else
 		fetch_release
 	fi
-	fold_end "component.${_arg_component}.fetch"
 }
 
 fetch_release()
@@ -405,20 +382,12 @@ build_and_install()
 	patch_sources
 
 	if [[ ! -f configure ]] || [[ "${_arg_force_autogen}" = "on" ]]; then
-		fold_start "component.${_arg_component}.autogen"
 		./autogen.sh
-		fold_end "component.${_arg_component}.autogen"
 	fi
-	fold_start "component.${_arg_component}.configure"
 	# shellcheck disable=SC2086
 	./configure ${_arg_configure_opts}
-	fold_end "component.${_arg_component}.configure"
-	fold_start "component.${_arg_component}.build"
 	make "${_arg_verbose[@]}" > /dev/null
-	fold_end "component.${_arg_component}.build"
-	fold_start "component.${_arg_component}.install"
 	${_sudo} make install "${_arg_verbose[@]}" > /dev/null
-	fold_end "component.${_arg_component}.install"
 	popd
 }
 
@@ -437,10 +406,8 @@ post_install_ldconfig()
 	local _sudo=""
 	[[ "${_arg_sudo}" = "on" ]] && _sudo=sudo
 
-	fold_start "component.${_arg_component}.post-install.ldconfig"
 	${_sudo} tee "${_ld_so_conf_file}"<<<"${_libpath}"
 	${_sudo} ldconfig -v
-	fold_end "component.${_arg_component}.post-install.ldconfig"
 }
 
 set_component_build_dir()
@@ -474,41 +441,11 @@ HERE_MAKEFILE
 
 header()
 {
-	case "${_arg_folding_style}" in
-		travis)
-			echo "=== $1 ==="
-			echo ""
-			;;
-		*)
-			echo ""
-			echo ""
-			echo "=== $1 ==="
-			echo ""
-			echo ""
-			;;
-	esac
-}
-
-fold_start()
-{
-	case "${_arg_folding_style}" in
-		travis)
-			echo "travis_fold:start:$1"
-			;;
-		*)
-			;;
-	esac
-}
-
-fold_end()
-{
-	case "${_arg_folding_style}" in
-		travis)
-			echo "travis_fold:end:$1"
-			;;
-		*)
-			;;
-	esac
+	echo ""
+	echo ""
+	echo "=== $1 ==="
+	echo ""
+	echo ""
 }
 
 ######################
@@ -534,8 +471,6 @@ parse_cli_arguments "$@"
 ensure_options_compatibility
 set_important_configure_options
 
-fold_start "component.${_arg_component}"
-
 header "Installing ${_arg_component} / ${_arg_version}"
 
 display_config
@@ -557,5 +492,3 @@ fetch_source
 build_and_install
 post_install
 popd # _arg_build_dir
-
-fold_end "component.${_arg_component}"
