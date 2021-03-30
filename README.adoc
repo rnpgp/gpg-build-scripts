@@ -65,7 +65,7 @@ https://gist.github.com/mattrude/3883a3801613b048d45b#gistcomment-2378027).
 When building from Git, additional software is needed, in particular Git,
 Automake, and a recent version of Gettext.  Note that Gettext available in
 Ubuntu Trusty is too old for this purpose--this fact must be taken into account
-when building from Git in Travis CI environment.
+when building from Git in CI environment.
 
 == Scripts
 
@@ -297,46 +297,8 @@ jobs:
           --suite-version "$GPG_VERSION"
           --build-dir "$GPG_BUILD_DIR"
           --configure-opts "$GPG_CONFIGURE_OPTS"
-          --folding-style travis
 ----
 
-
-==== Travis CI
-
-The scripts had been designed to work in Travis CI.  Use following listing
-as example of `.travis.yml`:
-
-[source,yaml]
-----
-dist: trusty
-sudo: required
-language: ruby
-
-env:
-  global:
-    - GPG_BUILD_DIR="$TRAVIS_BUILD_DIR/build_gpg"
-    - >
-      GPG_CONFIGURE_OPTS="--disable-doc --enable-pinentry-curses
-      --disable-pinentry-emacs --disable-pinentry-gtk2 --disable-pinentry-gnome3
-      --disable-pinentry-qt --disable-pinentry-qt4 --disable-pinentry-qt5
-      --disable-pinentry-tqt --disable-pinentry-fltk"
-
-  matrix:
-    - GPG_VERSION="latest"
-    - GPG_VERSION="2.1"
-
-before_install:
-  - >
-    ./install_gpg_all.sh
-    --suite-version "$GPG_VERSION"
-    --build-dir "$GPG_BUILD_DIR"
-    --configure-opts "$GPG_CONFIGURE_OPTS"
-    --folding-style travis
-  - gem install bundler -v 1.16.1
-----
-
-Please note the `--folding-style travis` option.  It makes the job logs more
-readable, as it divides the output of build steps into foldable sections.
 
 === Installing GnuPG Made Easy (GPGME)
 
