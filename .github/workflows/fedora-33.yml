@@ -24,7 +24,6 @@ jobs:
           - SCRIPT: build_dir
           - SCRIPT: components_individually
           - SCRIPT: configure_options
-          # - SCRIPT: folding_travis # Probably not useful to test in GHA
           - SCRIPT: gpgme
           - SCRIPT: install_prefix
           - SCRIPT: no_ldconfig
