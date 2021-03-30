@@ -77,8 +77,8 @@ gpg --version
 gpg --version | head -n 1 | cut -d" " -f 3 | grep -xF "2.2.20"
 
 # Assert configured algorithms (enabled SHA256 and disabled SHA512)…
-gpg --version | grep -i "SHA256"
-[[ ! $(gpg --version | grep -i "SHA512") ]]
+gpg --version | grep -q -i "SHA256"
+gpg --version | grep -q -v -i "SHA512"
 
 # Assert disabled docs for libgpg-error, and enabled for other packages…
 [[   -f "/usr/local/share/man/man1/gpg.1" ]]
@@ -86,8 +86,8 @@ gpg --version | grep -i "SHA256"
 
 # Assert that building the libgcrypt component has happened in a $BUILD_DIR,
 # and no other component was built there…
-pushd ${BUILD_DIR}
+pushd "${BUILD_DIR}"
 ls -d libgcrypt-*
-[[ ! $(ls . | grep -v "libgcrypt-") ]]
-[[ -f "$(ls | grep "libgcrypt-")/Makefile" ]]
+ls libgcrypt-*
+ls libgcrypt-*/Makefile
 popd

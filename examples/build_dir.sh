@@ -16,7 +16,7 @@ set -v # Print executed lines
 
 BUILD_DIR="${TRAVIS_BUILD_DIR:-$(mktemp -d)}/b"
 
-mkdir -p ${BUILD_DIR}
+mkdir -p "${BUILD_DIR}"
 
 # The --sudo option is typically needed when installing to standard locations.
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
@@ -45,9 +45,9 @@ gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.2\.[0-9]+"
 
 # Assert that ${BUILD_DIR} is now full of files (cause build had happened
 # there)…
-pushd ${BUILD_DIR}
+pushd "${BUILD_DIR}"
 ls -d libgpg-error-*
 ls -d gnupg-*
-[[ -f "$(ls | grep "libgpg-error-")/Makefile" ]]
-[[ -f "$(ls | grep "gnupg-")/Makefile" ]]
+ls libgpg-error-*/Makefile
+ls gnupg-*/Makefile
 popd

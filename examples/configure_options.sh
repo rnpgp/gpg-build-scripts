@@ -37,5 +37,5 @@ gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.2\.[0-9]+"
 [[ ! -f "/usr/local/share/man/man7/gnupg.7" ]]
 
 # Assert configured algorithms (enabled SHA256 and disabled SHA512)…
-gpg --version | grep -i "SHA256"
+gpg --version | grep -q -i "SHA256"
 gpg --version | grep -q -v -i "SHA512"
