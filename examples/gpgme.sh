@@ -13,9 +13,9 @@ set -v # Print executed lines
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
 # root (not recommended).
 ./install_gpg_all.sh \
-	--suite-version latest --sudo --ldconfig
+	--suite-version latest --sudo --ldconfig "$@"
 ./install_gpg_component.sh \
-	--component-name gpgme --component-version latest --sudo --ldconfig
+	--component-name gpgme --component-version latest --sudo --ldconfig "$@"
 
 ###############
 #    TESTS    #

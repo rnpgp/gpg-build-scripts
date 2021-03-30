@@ -19,7 +19,7 @@ set -v # Print executed lines
 # reconfigure dynamic linker run-time bindings, in other words to make the
 # installed shared libraries working correctly.  This option should not be
 # enabled on systems which do not feature `ldconfig`.
-./install_gpg_all.sh --suite-version latest --sudo --ldconfig
+./install_gpg_all.sh --suite-version latest --sudo --ldconfig "$@"
 
 ###############
 #    TESTS    #

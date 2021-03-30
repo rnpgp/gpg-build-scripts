@@ -28,40 +28,40 @@ BUILD_DIR="${TRAVIS_BUILD_DIR:-$(mktemp -d)}/b"
 	--configure-opts "--disable-doc" \
 	--verbose \
 	--sudo \
-	--ldconfig
+	--ldconfig "$@"
 ./install_gpg_component.sh \
 	--component-name libgcrypt \
 	--component-version latest \
 	--build-dir "${BUILD_DIR}" \
 	--sudo \
-	--ldconfig
+	--ldconfig "$@"
 ./install_gpg_component.sh \
 	--component-name libassuan \
 	--component-version latest \
 	--sudo \
-	--ldconfig
+	--ldconfig "$@"
 ./install_gpg_component.sh \
 	--component-name libksba \
 	--component-version latest \
 	--sudo \
-	--ldconfig
+	--ldconfig "$@"
 ./install_gpg_component.sh \
 	--component-name npth \
 	--component-version latest \
 	--sudo \
-	--ldconfig
+	--ldconfig "$@"
 ./install_gpg_component.sh \
 	--component-name pinentry \
 	--component-version 1.1.0 \
 	--sudo \
-	--ldconfig
+	--ldconfig "$@"
 ./install_gpg_component.sh \
 	--component-name gnupg \
 	--component-version 2.2.20 \
 	--configure-opts "--enable-gpg-sha256 --disable-gpg-sha512 --enable-doc" \
 	--verbose \
 	--sudo \
-	--ldconfig
+	--ldconfig "$@"
 
 ###############
 #    TESTS    #

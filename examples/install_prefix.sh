@@ -40,7 +40,7 @@ mkdir -p ${GPG_PREFIX} ${EXEC_PREFIX} ${MAN_DIR}
 # custom prefixes, a correct path to shared libraries will be obtained from
 # the `./configure` script.
 ./install_gpg_all.sh --suite-version latest --sudo --ldconfig \
-	--configure-opts "${GPG_CONFIGURE_OPTS}"
+	--configure-opts "${GPG_CONFIGURE_OPTS}" "$@"
 
 ###############
 #    TESTS    #
