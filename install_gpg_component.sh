@@ -85,6 +85,11 @@ OPTIONS
 
 		By default this option is off.
 
+	--[no-]force-autogen
+		Whether to do './autogen.sh', regardless of whether 'configure' exists.
+
+		By default this option is off.
+
 	--[no-]sudo
 		Whether to do 'sudo make install', or just 'make install', and whether
 		to update ldconfig configuration. Note that the ldconfig update is
@@ -133,6 +138,7 @@ set_default_options()
 	_arg_sudo="off"
 	_arg_verify="off"
 	_arg_verbose=()
+	_arg_force_autogen="off"
 	_arg_git="off"
 	_arg_color="off"
 	_arg_folding_style="none"
@@ -168,6 +174,14 @@ parse_cli_arguments()
 			--configure-opts)
 				_arg_configure_opts="$2"
 				shift
+				shift
+				;;
+			--force-autogen)
+				_arg_force_autogen="on"
+				shift
+				;;
+			--no-force-autogen)
+				_arg_force_autogen="off"
 				shift
 				;;
 			--ldconfig)
@@ -390,7 +404,7 @@ build_and_install()
 
 	patch_sources
 
-	if [[ ! -f configure ]]; then
+	if [[ ! -f configure ]] || [[ "${_arg_force_autogen}" = "on" ]]; then
 		fold_start "component.${_arg_component}.autogen"
 		./autogen.sh
 		fold_end "component.${_arg_component}.autogen"
