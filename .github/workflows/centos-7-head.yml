@@ -51,5 +51,4 @@ jobs:
           # set path etc
           . /opt/ribose/ribose-automake116/enable
 
-          set -x
-          "./examples/${SCRIPT}.sh"
+          bash -x "./examples/${SCRIPT}.sh"
