@@ -52,6 +52,7 @@ A set of build scripts for GNU Privacy Guard.
 |image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-10.15-head.yml/badge.svg["macOS 10.15 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-10.15-head.yml"]
 |==========================
 
+image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/docker.yml/badge.svg["Docker", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/docker.yml"]
 
 == Prerequisites
 
