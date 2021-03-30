@@ -16,6 +16,6 @@ RUN rpm --import https://github.com/riboseinc/yum/raw/master/ribose-packages.pub
 
 WORKDIR /usr/local/src/gpg-build-scripts
 COPY . .
-RUN ./install_gpg_all.sh --suite-version "${GNUPG_VERSION}" --sudo --configure-opts "${CONFIGURE_OPTS}"
+RUN ./install_gpg_all.sh --suite-version "${GNUPG_VERSION}" --sudo --configure-opts "${CONFIGURE_OPTS}" --ldconfig
 
 WORKDIR /root
