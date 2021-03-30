@@ -30,7 +30,7 @@ GPG_CONFIGURE_OPTS="--prefix=${GPG_PREFIX} \
 # provided with $PATH and $GPG_PREFIX, hence we must enhance $PATH.
 export PATH="${EXEC_PREFIX}/bin:${PATH}"
 
-mkdir -p ${GPG_PREFIX} ${EXEC_PREFIX} ${MAN_DIR}
+mkdir -p "${GPG_PREFIX}" "${EXEC_PREFIX}" "${MAN_DIR}"
 
 # The --ldconfig option is typically needed on GNU+Linux systems.  It causes
 # `ldconfig` to be run right after installing each component in order to
