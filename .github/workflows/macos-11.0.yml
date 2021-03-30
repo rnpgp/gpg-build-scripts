@@ -1,0 +1,72 @@
+name: macOS 11.0
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'release/**'
+
+jobs:
+  tests:
+    runs-on: macos-11.0
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    strategy:
+      matrix:
+        env:
+          - SCRIPT: all_2.1
+          - SCRIPT: all_2.2
+          - SCRIPT: build_dir
+          - SCRIPT: components_individually
+          - SCRIPT: configure_options
+          - SCRIPT: gpgme
+          - SCRIPT: install_prefix
+          - SCRIPT: no_ldconfig
+          - SCRIPT: no_sudo
+          - SCRIPT: verify
+
+        exclude:
+          - env:
+              SCRIPT: all_2.1  # libksba too old for macOS
+          - env:
+              SCRIPT: no_sudo
+
+    env: ${{ matrix.env }}
+    timeout-minutes: 70
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up build environment
+        run: |
+          cat > Brewfile <<BREWFILE
+          brew "openssl@1.1"
+          brew "make"
+          brew "autoconf"
+          brew "automake"
+          brew "libtool"
+          brew "pkg-config"
+          brew "gnupg"
+          brew "bison"
+          BREWFILE
+
+          brew update-reset
+          # homebrew fails because `openssl` is a symlink while it tries to remove a directory.
+          rm /usr/local/Cellar/openssl || true
+          # homebrew fails to update python 3.9.1 to 3.9.1.1 due to unlinking failure
+          rm /usr/local/bin/2to3 || true
+
+          brew bundle
+      - name: Import GnuPG keys for "verify.sh" example
+        if: ${{ matrix.env.SCRIPT == 'verify' }}
+        run: |
+          bash ci/import_gpg_keys.sh
+      - name: Build GPG
+        # Workaround to correctly build pinentry on the latest GHA on
+        # macOS.  Most likely there is a better solution.
+        env:
+          CFLAGS: "-D_XOPEN_SOURCE_EXTENDED"
+          CXXFLAGS: "-D_XOPEN_SOURCE_EXTENDED"
+        run: |
+          bash -x "./examples/${SCRIPT}.sh" --no-ldconfig

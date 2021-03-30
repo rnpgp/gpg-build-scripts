@@ -33,6 +33,12 @@ set -v # Print executed lines
 
 PREFIX="/opt/gnupg"
 
+# Put PREFIX under a temp dir if PREFIX is not writable.
+if	[[ ! -d "${PREFIX%/*}" && ! -w /              ]] || \
+	[[ ! -d "${PREFIX}"    && ! -w "${PREFIX%/*}" ]]; then
+	PREFIX="$(mktemp -d)${PREFIX}"
+fi
+
 GPG_CONFIGURE_OPTS="--prefix=${PREFIX} \
 	--with-libgpg-error-prefix=${PREFIX} \
 	--with-libassuan-prefix=${PREFIX} \
