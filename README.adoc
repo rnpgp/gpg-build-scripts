@@ -4,7 +4,7 @@ A set of build scripts for GNU Privacy Guard.
 
 [options="header"]
 |==========================
-|distro       |        |latest  |head
+|OS \ GPG version |2.1, 2.2  |latest   |head
 
 |Fedora 33
 |image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/fedora-33.yml/badge.svg["Fedora 33", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/fedora-33.yml"]
@@ -40,6 +40,16 @@ A set of build scripts for GNU Privacy Guard.
 |image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04.yml/badge.svg["Ubuntu 14.04", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04.yml"]
 |image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-latest.yml/badge.svg["Ubuntu 14.04 (latest)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-latest.yml"]
 |image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-head.yml/badge.svg["Ubuntu 14.04 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-head.yml"] footnote:[Version of gettext is too old in Ubuntu 14.04.]
+
+|macOS 11.0
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-11.0.yml/badge.svg["macOS 11.0", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-11.0.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-11.0-latest.yml/badge.svg["macOS 11.0 (latest)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-11.0-latest.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-11.0-head.yml/badge.svg["macOS 11.0 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-11.0-head.yml"]
+
+|macOS 10.15
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-10.15.yml/badge.svg["macOS 10.15", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-10.15.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-10.15-latest.yml/badge.svg["macOS 10.15 (latest)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-10.15-latest.yml"]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-10.15-head.yml/badge.svg["macOS 10.15 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-10.15-head.yml"]
 |==========================
 
 

@@ -36,4 +36,5 @@ gpgme-config --version | head -n 1 | cut -d" " -f 3 | grep -xE "1\.[0-9]+\.[0-9]
 [[ $(gpgme-config --prefix) == "/usr/local" ]]
 
 # Assert the presence of dynamic library…
-[[ -f /usr/local/lib/libgpgme.so ]]
+# shellcheck disable=SC2010
+ls /usr/local/lib/libgpgme.{so,dylib} 2>/dev/null | grep -q .
