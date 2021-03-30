@@ -100,6 +100,10 @@ OPTIONS
 
 		This option is incompatible with --component-git-ref.
 
+	--[no-]verbose
+		Whether to pass VERBOSE=1 to 'make' and 'make install'.
+		By default it is off.
+
 	Output options:
 
 	--folding-style STYLE
@@ -128,6 +132,7 @@ set_default_options()
 	_arg_ldconfig="off"
 	_arg_sudo="off"
 	_arg_verify="off"
+	_arg_verbose=()
 	_arg_git="off"
 	_arg_color="off"
 	_arg_folding_style="none"
@@ -187,6 +192,14 @@ parse_cli_arguments()
 				;;
 			--no-verify)
 				_arg_verify="off"
+				shift
+				;;
+			--verbose)
+				_arg_verbose=("VERBOSE=1")
+				shift
+				;;
+			--no-verbose)
+				_arg_verbose=()
 				shift
 				;;
 			--folding-style)
@@ -387,10 +400,10 @@ build_and_install()
 	./configure ${_arg_configure_opts}
 	fold_end "component.${_arg_component}.configure"
 	fold_start "component.${_arg_component}.build"
-	make > /dev/null
+	make "${_arg_verbose[@]}" > /dev/null
 	fold_end "component.${_arg_component}.build"
 	fold_start "component.${_arg_component}.install"
-	${_sudo} make install > /dev/null
+	${_sudo} make install "${_arg_verbose[@]}" > /dev/null
 	fold_end "component.${_arg_component}.install"
 	popd
 }

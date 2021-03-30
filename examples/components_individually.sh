@@ -26,6 +26,7 @@ BUILD_DIR="${TRAVIS_BUILD_DIR}/b"
 	--component-name libgpg-error \
 	--component-version latest \
 	--configure-opts "--disable-doc" \
+	--verbose \
 	--sudo \
 	--ldconfig
 ./install_gpg_component.sh \
@@ -58,6 +59,7 @@ BUILD_DIR="${TRAVIS_BUILD_DIR}/b"
 	--component-name gnupg \
 	--component-version 2.2.20 \
 	--configure-opts "--enable-gpg-sha256 --disable-gpg-sha512 --enable-doc" \
+	--verbose \
 	--sudo \
 	--ldconfig
 
