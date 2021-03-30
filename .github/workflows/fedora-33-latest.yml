@@ -40,5 +40,4 @@ jobs:
             file
       - name: Build GPG
         run: |
-          set -x
-          "./examples/${SCRIPT}.sh"
+          bash -x "./examples/${SCRIPT}.sh"

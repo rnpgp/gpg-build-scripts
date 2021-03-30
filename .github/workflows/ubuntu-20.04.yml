@@ -68,5 +68,4 @@ jobs:
           bash ci/import_gpg_keys.sh
       - name: Build GPG
         run: |
-          set -x
-          "./examples/${SCRIPT}.sh"
+          bash -x "./examples/${SCRIPT}.sh"

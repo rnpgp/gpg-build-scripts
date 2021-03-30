@@ -37,5 +37,4 @@ jobs:
             libgnutls28-dev bzip2 make gettext texinfo gnutls-bin build-essential g++
       - name: Build GPG
         run: |
-          set -x
-          "./examples/${SCRIPT}.sh"
+          bash -x "./examples/${SCRIPT}.sh"
