@@ -36,7 +36,7 @@ fi
 # by default, build fails for some reason.  Fixing it for unstable Pinentry
 # version is out of the scope of this example.
 ./install_gpg_all.sh --suite-version master --sudo --ldconfig \
-	--configure-opts "--disable-doc --disable-pinentry-qt"
+	--configure-opts "--disable-doc --disable-pinentry-qt" "$@"
 
 ###############
 #    TESTS    #

@@ -28,7 +28,7 @@ mkdir -p ${BUILD_DIR}
 # installed shared libraries working correctly.  This option should not be
 # enabled on systems which do not feature `ldconfig`.
 ./install_gpg_all.sh --suite-version 2.2 --sudo --ldconfig \
-	--build-dir ${BUILD_DIR}
+	--build-dir "${BUILD_DIR}" "$@"
 
 ###############
 #    TESTS    #

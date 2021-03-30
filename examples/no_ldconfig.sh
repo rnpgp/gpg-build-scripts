@@ -53,7 +53,7 @@ mkdir -p "${PREFIX}"
 # The --sudo option is typically needed when installing to standard locations.
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
 # root (not recommended).
-./install_gpg_all.sh --suite-version latest --sudo --configure-opts "${GPG_CONFIGURE_OPTS}"
+./install_gpg_all.sh --suite-version latest --sudo --configure-opts "${GPG_CONFIGURE_OPTS}" "$@"
 
 ###############
 #    TESTS    #
