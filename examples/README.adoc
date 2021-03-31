@@ -1,8 +1,8 @@
 This directory contains usage examples for `gpg-build-scripts`.  This README
 document describes these examples.
 
-Every example is tested in Travis CI.  They all together comprise a test suite
-for `gpg-build-scripts`.  Every example is arranged as follows: it begins
+Every example is tested in GitHub Action CI.  They all together comprise a test
+suite for `gpg-build-scripts`.  Every example is arranged as follows: it begins
 with a variable definitions block, which is followed with actual installation
 commands, and ends with a sequence of assertions which confirm installation
 correctness.  Every example includes comments.

@@ -16,7 +16,7 @@ set -v # Print executed lines
 #    SETUP    #
 ###############
 
-BUILD_DIR="${TRAVIS_BUILD_DIR:-$(mktemp -d)}/b"
+BUILD_DIR="${BUILD_DIR:-$(mktemp -d)}/b"
 
 # Install specific versions of some components.  Disable documentation for
 # libgpg-error, and enable it (default) for other components.
