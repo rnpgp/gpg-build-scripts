@@ -10,7 +10,7 @@ set -v # Print executed lines
 # This example shows how to install GnuPG to a non-standard location
 # (overriding both --prefix, and --exec-prefix )
 
-GPG_PREFIX="${TRAVIS_BUILD_DIR:-$(mktemp -d)}/opt/gpg-all"
+GPG_PREFIX="${BUILD_DIR:-$(mktemp -d)}/opt/gpg-all"
 
 GPG_CONFIGURE_OPTS="--prefix=${GPG_PREFIX} \
 	--with-libgpg-error-prefix=${GPG_PREFIX} \

@@ -11,10 +11,7 @@ set -v # Print executed lines
 ###############
 
 # When building from Git, some other packages are required to be installed.
-if [[ ( "${TRAVIS}" = "true" ) && ( "${TRAVIS_OS_NAME}" = "linux" ) ]]; then
-	sudo apt-get update
-	sudo apt-get install -y texinfo
-fi
+# E.g., texinfo.
 
 # The --sudo option is typically needed when installing to standard locations.
 # Note that `sudo ./install_gpg_all …` is not the same—it would compile as
