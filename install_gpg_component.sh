@@ -105,6 +105,11 @@ OPTIONS
 
 		This option is incompatible with --component-git-ref.
 
+	--[no-]trace
+		Whether to turn on Bash option \`set -x\` in Bash, after displaying
+		build configs.
+		By default it is off.
+
 	--[no-]verbose
 		Whether to pass VERBOSE=1 to 'make' and 'make install'.
 		By default it is off.
@@ -125,6 +130,7 @@ set_default_options()
 	_arg_sudo="off"
 	_arg_verify="off"
 	_arg_verbose=()
+	_arg_trace="off"
 	_arg_force_autogen="off"
 	_arg_git="off"
 	_arg_color="off"
@@ -202,6 +208,14 @@ parse_cli_arguments()
 				_arg_verbose=()
 				shift
 				;;
+			--trace)
+				_arg_trace="on"
+				shift
+				;;
+			--no-trace)
+				_arg_trace="off"
+				shift
+				;;
 			-h|--help)
 				print_help
 				exit 0
@@ -244,6 +258,7 @@ ld_config: "${_arg_ldconfig}"
 sudo: "${_arg_sudo}"
 verify: "${_arg_verify}"
 verbose: "${_arg_verbose}"
+trace: "${_arg_trace}"
 build_dir: "${_arg_build_dir:-<temporary directory>}"
 configure_options: "${_arg_configure_opts}"
 
@@ -476,7 +491,9 @@ header "Installing ${_arg_component} / ${_arg_version}"
 
 display_config
 
-# set -x # From now, print every command to STDOUT
+if [[ "${_arg_trace}" = on ]]; then
+	set -x # From now, print every command to STDOUT
+fi
 
 if [[ "${_arg_version}" =~ ^latest ]]; then
 	determine_latest_version
