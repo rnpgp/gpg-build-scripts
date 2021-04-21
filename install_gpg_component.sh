@@ -243,6 +243,7 @@ git: "${_arg_git}"
 ld_config: "${_arg_ldconfig}"
 sudo: "${_arg_sudo}"
 verify: "${_arg_verify}"
+verbose: "${_arg_verbose}"
 build_dir: "${_arg_build_dir:-<temporary directory>}"
 configure_options: "${_arg_configure_opts}"
 
