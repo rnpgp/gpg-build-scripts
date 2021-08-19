@@ -6,6 +6,10 @@ on:
     branches:
       - master
       - 'release/**'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 1,15 * *'
+
 
 env:
   # For tzdata interactive input during apt-get install
