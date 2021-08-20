@@ -29,7 +29,7 @@ command -v gpg | grep -e "${GPG_PREFIX}/bin/gpg"
 gpg --version
 
 # Assert executable version…
-gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.2\.[0-9]+"
+gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.3\.[0-9]+"
 
 # Assert that manual entry has not been installed…
 [[ ! -f "/usr/local/share/man/man1/gpg.1" ]]

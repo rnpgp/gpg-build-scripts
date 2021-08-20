@@ -4,7 +4,7 @@ set -e # Early exit if any command returns non-zero status code
 set -v # Print executed lines
 
 # This example shows installation of the latest version of GnuPG
-# (currently 2.2).
+# (currently 2.3).
 
 ###############
 #    SETUP    #
@@ -32,4 +32,4 @@ set -v # Print executed lines
 gpg --version
 
 # Assert executable version…
-gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.2\.[0-9]+"
+gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.3\.[0-9]+"

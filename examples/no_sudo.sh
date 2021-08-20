@@ -48,7 +48,7 @@ sudo --non-interactive true || SUDO_UNAVAILABLE=1
 gpg --version
 
 # Assert executable version…
-gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.2\.[0-9]+"
+gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.3\.[0-9]+"
 
 # Assert manual entry location…
 [[ -f "${GPG_PREFIX}/share/man/man1/gpg.1" ]]
