@@ -19,7 +19,7 @@ docker build -t gnupg:2.1    --build-arg GNUPG_VERSION=2.1 .
 
 # Assert installed versions…
 # (All images are configured to have GnuPG executable at /usr/local/bin/gpg)
-docker run -i gnupg:latest gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.2\.[0-9]+"
+docker run -i gnupg:latest gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.3\.[0-9]+"
 docker run -i gnupg:2.2    gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.2\.[0-9]+"
 docker run -i gnupg:2.1    gpg --version | head -n 1 | cut -d" " -f 3 | grep -xE "2\.1\.[0-9]+"
 
