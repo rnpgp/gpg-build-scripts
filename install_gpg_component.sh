@@ -265,18 +265,49 @@ configure_options: "${_arg_configure_opts}"
 CONFIG
 }
 
-# Consults https://versions.gnupg.org/swdb.lst and assigns the most recent
+# Assigns the most recent
 # version of component ${_arg_component} to ${_arg_version} variable.
 determine_latest_version()
 {
+	determine_latest_version_by_swdb || \
+	determine_latest_version_by_scraping
+}
+
+# Consults https://versions.gnupg.org/swdb.lst and assigns the most recent
+# version of component ${_arg_component} to ${_arg_version} variable.
+determine_latest_version_by_swdb()
+{
 	local _component_underscored=$(echo "${_arg_component}" | tr - _)
-	_arg_version=$(curl "https://versions.gnupg.org/swdb.lst" |
+	_arg_version=$(curl -s "https://versions.gnupg.org/swdb.lst" |
 		grep "_ver" |
 		grep -v "w32" |
 		sort --reverse |
 		grep "${_component_underscored}" |
 		head -n 1 |
 		cut -d " " -f 2)
+
+	if [[ $? != 0 ]]; then
+		>&2 echo "Warning: There were issues accessing https://versions.gnupg.org/swdb.lst"
+		return 1
+	fi
+	echo "The latest version of ${_arg_component} is ${_arg_version}."
+}
+
+# Consults https://www.gnupg.org/ftp and assigns the most recent
+# version of component ${_arg_component} to ${_arg_version} variable.
+determine_latest_version_by_scraping()
+{
+	>&2 echo "Determining latest version by scraping https://www.gnupg.org/ftp/gcrypt/${_arg_component}/"
+
+	# Using <<<".." to work around "Curl (23) Failed writing body" issue.
+	# See: https://stackoverflow.com/questions/16703647/why-does-curl-return-error-23-failed-writing-body
+	_arg_version=$(<<<"$(curl -s "https://www.gnupg.org/ftp/gcrypt/${_arg_component}/")" \
+		sed '/tr/!d; /tar/!d; /'"${_arg_component}"'/!d; s/.tar.*$//; s/.*'"${_arg_component}"'-//; /tr/d; q'
+		)
+	if [[ $? != 0 ]]; then
+		>&2 echo "Warning: There were issues accessing https://www.gnupg.org/ftp/gcrypt/${_arg_component}/"
+		return 1
+	fi
 	echo "The latest version of ${_arg_component} is ${_arg_version}."
 }
 
@@ -480,7 +511,7 @@ errx() {
 #        MAIN        #
 ######################
 
-set -e # Early exit if any command returns non-zero status code
+set -eo pipefail # Early exit if any command returns non-zero status code
 
 set_default_options
 parse_cli_arguments "$@"
