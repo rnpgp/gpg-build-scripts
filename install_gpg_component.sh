@@ -244,7 +244,7 @@ ensure_options_compatibility()
 		cat <<ECHO
 ERROR --verify option cannot be used together with --component-git-ref.
 ECHO
-		exit 600
+		exit 255
 	fi
 }
 
