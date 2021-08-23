@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+. ci/install_functions.inc.sh
+
+ensure_automake
+ensure_bison
+ensure_gettext

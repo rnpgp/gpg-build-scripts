@@ -46,6 +46,9 @@ jobs:
           rm /usr/local/bin/2to3 || true
 
           brew bundle
+      - name: Set up cacheable build environment
+        run: |
+          ci/install_prerequisites
       - name: Build GPG
         # Workaround to correctly build pinentry on the latest GHA on
         # macOS.  Most likely there is a better solution.
