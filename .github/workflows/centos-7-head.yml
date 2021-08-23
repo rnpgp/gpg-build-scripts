@@ -46,13 +46,9 @@ jobs:
           rpm --import https://github.com/riboseinc/yum/raw/master/ribose-packages.pub
           curl -L https://github.com/riboseinc/yum/raw/master/ribose.repo \
             -o /etc/yum.repos.d/ribose.repo
-          ${{ env.YUM }} -y -q install ribose-automake116
+      - name: Set up cacheable build environment
+        run: |
+          ci/install_prerequisites
       - name: Build GPG
         run: |
-          # set ACLOCAL_PATH if using ribose-automake116
-          ACLOCAL_PATH=$(scl enable ribose-automake116 -- aclocal --print-ac-dir):$(rpm --eval '%{_datadir}/aclocal')
-          export ACLOCAL_PATH
-          # set path etc
-          . /opt/ribose/ribose-automake116/enable
-
           bash -x "./examples/${SCRIPT}.sh"

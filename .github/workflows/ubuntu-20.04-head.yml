@@ -43,6 +43,9 @@ jobs:
             autoconf automake libtool bison \
             libncurses5-dev libncursesw5-dev libbz2-dev libz-dev \
             libgnutls28-dev bzip2 make gettext texinfo gnutls-bin build-essential g++
+      - name: Set up cacheable build environment
+        run: |
+          ci/install_prerequisites
       - name: Build GPG
         run: |
           bash -x "./examples/${SCRIPT}.sh"
