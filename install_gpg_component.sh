@@ -472,12 +472,12 @@ set_component_build_dir()
 detect_libpath()
 {
 	pushd "${_component_build_dir}" > /dev/null
-	make -f - display-libdir<<'HERE_MAKEFILE'
+	make -f - display-libdir<<'HEREMAKEFILE'
 include Makefile
 
 display-%:
 	@echo "$($*)"
-HERE_MAKEFILE
+HEREMAKEFILE
 
 	popd > /dev/null #$_component_build_dir
 }
