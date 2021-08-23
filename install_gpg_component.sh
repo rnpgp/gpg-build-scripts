@@ -500,6 +500,7 @@ header()
 ######################
 
 readonly __progname="$(basename "$0")"
+# shellcheck disable=SC2034
 readonly __progdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 
 errx() {
