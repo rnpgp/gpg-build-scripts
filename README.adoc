@@ -39,7 +39,7 @@ A set of build scripts for GNU Privacy Guard.
 |Ubuntu 14.04
 |image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04.yml/badge.svg["Ubuntu 14.04", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04.yml"]
 |image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-latest.yml/badge.svg["Ubuntu 14.04 (latest)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-latest.yml"]
-|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-head.yml/badge.svg["Ubuntu 14.04 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-head.yml"] footnote:[Version of gettext is too old in Ubuntu 14.04.]
+|image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-head.yml/badge.svg["Ubuntu 14.04 (head)", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/ubuntu-14.04-head.yml"]
 
 |macOS 11.0
 |image:https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-11.0.yml/badge.svg["macOS 11.0", link="https://github.com/rnpgp/gpg-build-scripts/actions/workflows/macos-11.0.yml"]
