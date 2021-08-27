@@ -14,6 +14,10 @@ set -v # Print executed lines
 # root (not recommended).
 ./install_gpg_all.sh \
 	--suite-version latest --sudo --ldconfig "$@"
+
+# Start agent in case it's not running (mainly for macOSes)
+gpgconf --launch gpg-agent
+
 ./install_gpg_component.sh \
 	--component-name gpgme --component-version latest --sudo --ldconfig "$@"
 
