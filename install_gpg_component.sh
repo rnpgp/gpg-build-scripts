@@ -271,13 +271,21 @@ determine_latest_version()
 {
 	determine_latest_version_by_swdb || \
 	determine_latest_version_by_scraping
+
+	if [[ -z "${_arg_version}" ]]; then
+		>&2 echo "Warning: Could not determine version for ${_arg_component}."
+		return 1
+	fi
 }
 
 # Consults https://versions.gnupg.org/swdb.lst and assigns the most recent
 # version of component ${_arg_component} to ${_arg_version} variable.
 determine_latest_version_by_swdb()
 {
-	local _component_underscored=$(echo "${_arg_component}" | tr - _)
+	>&2 echo "Determining latest version by scraping https://versions.gnupg.org/swdb.lst"
+
+	local _component_underscored="${_arg_component:?}"
+	_component_underscored="${_component_underscored//-/_}"
 	_arg_version=$(curl -s "https://versions.gnupg.org/swdb.lst" |
 		grep "_ver" |
 		grep -v "w32" |
@@ -286,11 +294,13 @@ determine_latest_version_by_swdb()
 		head -n 1 |
 		cut -d " " -f 2)
 
+	# shellcheck disable=SC2181
 	if [[ $? != 0 ]]; then
 		>&2 echo "Warning: There were issues accessing https://versions.gnupg.org/swdb.lst"
 		return 1
 	fi
-	echo "The latest version of ${_arg_component} is ${_arg_version}."
+
+	echo "The latest version of ${_arg_component} is '${_arg_version}'."
 }
 
 # Consults https://www.gnupg.org/ftp and assigns the most recent
@@ -302,13 +312,16 @@ determine_latest_version_by_scraping()
 	# Using <<<".." to work around "Curl (23) Failed writing body" issue.
 	# See: https://stackoverflow.com/questions/16703647/why-does-curl-return-error-23-failed-writing-body
 	_arg_version=$(<<<"$(curl -s "https://www.gnupg.org/ftp/gcrypt/${_arg_component}/")" \
-		sed '/tr/!d; /tar/!d; /'"${_arg_component}"'/!d; s/.tar.*$//; s/.*'"${_arg_component}"'-//; /tr/d; q'
+		sed '/tr/!d; /tar/!d; /'"${_arg_component:?}"'/!d; s/.tar.*$//; s/.*'"${_arg_component}"'-//; /tr/d; q'
 		)
+
+	# shellcheck disable=SC2181
 	if [[ $? != 0 ]]; then
 		>&2 echo "Warning: There were issues accessing https://www.gnupg.org/ftp/gcrypt/${_arg_component}/"
 		return 1
 	fi
-	echo "The latest version of ${_arg_component} is ${_arg_version}."
+
+	echo "The latest version of ${_arg_component} is '${_arg_version}'."
 }
 
 create_temporary_build_dir()
