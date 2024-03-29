@@ -23,13 +23,13 @@ DESCRIPTION
 EXAMPLES
 
 	# Installing latest version of all GnuPG software
-	install_gpg_component.sh --suite-version latest
+	install_gpg_all.sh --suite-version latest
 
 	# Installing GnuPG 2.1
-	install_gpg_component.sh --suite-version 2.1
+	install_gpg_all.sh --suite-version 2.1
 
 	# Passing options to install_gpg_component.sh scripts
-	install_gpg_component.sh --suite-version latest --sudo
+	install_gpg_all.sh --suite-version latest --sudo
 
 OPTIONS
 
