@@ -11,7 +11,7 @@ print_help ()
 	cat <<HELP
 USAGE
 
-	install_gpg_component.rb <options>
+	install_gpg_component.sh <options>
 
 DESCRIPTION
 
@@ -20,16 +20,16 @@ DESCRIPTION
 EXAMPLES
 
 	# Installing latest version of libgpg-error
-	install_gpg_component.rb --component-name libgpg-error --component-version latest
+	install_gpg_component.sh --component-name libgpg-error --component-version latest
 
 	# Installing latest version of libgpg-error with sudo
-	install_gpg_component.rb --component-name libgpg-error --component-version latest --sudo
+	install_gpg_component.sh --component-name libgpg-error --component-version latest --sudo
 
 	# Installing latest git revision of libgpg-error
-	install_gpg_component.rb --component-name libgpg-error --component-git-ref master
+	install_gpg_component.sh --component-name libgpg-error --component-git-ref master
 
 	# Passing options to ./configure script
-	install_gpg_component.rb --component-name libgpg-error --component-version latest --configure-opts "--disable-doc"
+	install_gpg_component.sh --component-name libgpg-error --component-version latest --configure-opts "--disable-doc"
 
 OPTIONS
 
