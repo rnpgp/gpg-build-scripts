@@ -133,12 +133,14 @@ follows:
   https://gist.github.com/mattrude/3883a3801613b048d45b
 * `2.2` means GnuPG 2.1, and other component as in this Gist:
   https://gist.github.com/vt0r/a2f8c0bcb1400131ff51
+* Currently no all in one support for explicit versioning with 
+  `2.3`, `2.4`, etc. arguments yet. Use `latest` instead.
 * `latest` means the latest version of GnuPG and all its components.  They are
   obtained from https://versions.gnupg.org/swdb.lst, which is maintained by
   GnuPG developers, and which is used by GnuPG's stock software updater.
 * `master` means whatever is currently on `master` branch in Git.
 
-TIP: Prefer `latest` over `2.2`.
+TIP: Prefer `latest` over explicit versioning.
 
 Any other arguments are passed to `install_gpg_component.sh`, which is invoked
 from `install_gpg_all.sh` for every component once.  For example, following
