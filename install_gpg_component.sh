@@ -289,6 +289,7 @@ determine_latest_version_by_swdb()
 	_arg_version=$(curl -s "https://versions.gnupg.org/swdb.lst" |
 		grep "_ver" |
 		grep -v "w32" |
+		grep -v "gnupgdesk" |
 		sort --reverse |
 		grep "${_component_underscored}" |
 		head -n 1 |
